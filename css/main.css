@@ -10,6 +10,7 @@
   --dark: #252638;
   --red: #FF2626;
   --blue: #212BB5;
+  --blue-hover: #008cff;
   --text-light-color: #e2e2e9;
   --text-dark-color: #283552;
 }
@@ -138,7 +139,7 @@ body {
   color: #fff;
 }
 .btn.primary:hover {
-  background-color: #008cff;
+  background-color: var(--blue-hover);
   color: #fff;
 }
 .btn.red {
@@ -202,7 +203,7 @@ a.logo img {
   font-size: .8rem;
   color: #868686;
 }
-#accord li:last-child{
+#accord li:first-child{
   color: #889aff;
 }
 #accord li:not(:last-child)::after{
