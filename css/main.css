@@ -1,0 +1,100 @@
+@import url('./google/material-icons.css');
+@import url('./google/symbols-outlined.css');
+@font-face {
+  font-family: "Degular";
+  src: url("../fonts/DEGULARVARIABLE.TTF") format("ttf");
+}
+:root {
+  --highlight: #F1F4FD;
+  --footer-highlight: #FAFAFA;
+  --dark: #252638;
+  --red: #FF2626;
+  --blue: #212BB5;
+  --text-light-color: #e2e2e9;
+  --text-dark-color: #283552;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+a{
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--blue);
+}
+svg path{
+  fill: var(--text-dark-color);
+}
+body {
+  font-size: 15px;
+  color: var(--text-dark-color);
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  font-family: "degular";
+  position: relative;
+}
+.text-truncate {
+  --line: 2;
+  display: -moz-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: box;
+  display: flexbox;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -webkit-line-clamp: var(--line, 1);
+  line-clamp: var(--line, 1);
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+#modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 219348;
+  background-color: #0a132227;
+  backdrop-filter: blur(2px);
+  padding: 1.5rem;
+  display: none;
+  opacity: 0;
+}
+#modal.active {
+  justify-content: center;
+  align-items: flex-start;
+  animation: enter 0.1s ease forwards;
+  display: flex;
+}
+#modal .content {
+  background-color: #fff;
+  box-shadow: 0 0 5px 3px #bec5c983;
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  top: -200%;
+}
+#modal.active .content {
+  animation: topEnter 0.2s ease forwards;
+}
+#modal .close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.2rem;
+  font-size: 1.7rem;
+  cursor: pointer;
+  background-color: var(--red);
+  color: var(--white);
+}
+.modalContent {
+  display: none;
+}
+
+.wrapper {
+  max-width: 1146px;
+  margin: auto;
+}
