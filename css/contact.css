@@ -1,6 +1,7 @@
 @import url("./main.css");
 @import url("./header.css");
 @import url("./footer.css");
+@import url("./input.css");
 #contact{
     padding: 3rem 2rem 5rem;
     max-width: 900px;
@@ -54,39 +55,8 @@
     line-height: 1;
     margin: 0 !important;
 }
-.input-group{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: .5rem;
-}
-.input{
-    margin-bottom: .5rem;
-    display: flex;
-}
-:is(input,select,textarea){
-    padding: 1rem 1.4rem;
-    border: 1px solid #a1a1a1;
-    border-radius: 4px;
-    outline: none;
-    font-family: inherit;
-    font-size: inherit;
-    resize: none;
-    width: 100%;
-}
-:is(input,select,textarea):focus{
-    box-shadow: 0 0 2px 2px #0084ff25;
-    border-color: #55adffb7;
-}
-input[type=submit]{
-    border: none;
-    background-color: var(--blue);
-    color: #fff;
-    cursor: pointer;
-}
-input[type=submit]:is(:focus,:hover){
-    background-color: var(--blue-hover);
-}
+
+
 
 @media (max-width:700px) {
     .contact-agileinfo {
