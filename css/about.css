@@ -1,0 +1,46 @@
+@import url('./main.css');
+@import url('./header.css');
+@import url('./footer.css');
+
+#content{
+    margin: 3rem auto;
+    padding: 2rem 4rem;
+    max-width: 800px;
+    font-size: clamp(15px,1.1rem,4vw);
+}
+#content ol{
+    padding-left: 1rem;
+}
+#content > *{
+    margin-bottom: 1rem;
+}
+#content img{
+    width: 100%;
+    object-fit: contain;
+}
+#content :is(h1,h2,h3,h4,h5,h6){
+    margin-bottom: .1rem;
+    margin-top: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+#content h2{
+    font-size: clamp(32px,1.9rem,6vw);
+    line-height: clamp(38px,1.9rem,6vw);
+    text-align: center;
+}
+#content :is(h1,h2,h3,h4,h5,h6) span{
+    color: var(--red);
+}
+#content h5{
+    font-weight: 500;
+    font-style: italic;
+}
+#content p{
+    margin-bottom: 1.9rem;
+}
+@media (max-width:520px) {
+    #content {
+        padding: 2rem ;
+    }
+}
