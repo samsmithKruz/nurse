@@ -1,0 +1,77 @@
+@import url("./main.css");
+@import url("./dashboard.css");
+
+.b-l {
+  border-left: 13px solid var(--blue);
+  padding: 1rem 2rem;
+}
+.b-l h1 {
+  line-height: 1;
+  font-size: 3rem;
+  margin-top: 1rem;
+}
+.classes .cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  width: 100%;
+  padding: 1rem 2rem;
+  gap: 2rem;
+}
+.classes .card {
+  font-weight: 400;
+  padding: 1rem;
+  background-color: #fafafa;
+  position: relative;
+  padding-top: 2.5rem;
+  opacity: .512;
+  cursor: not-allowed;
+  color: inherit;
+}
+.classes .card:hover{
+  transform: scale(1.10);
+  transition: all ease-in-out .3s;
+}
+.classes .card:is(.nom,.current){
+  opacity: 1;
+  cursor: pointer;
+}
+.classes .card.done{
+  background-color: #141f12a1;
+  opacity: 1;
+  color: #fafafae0;
+}
+.classes .card:is(.nom,.current){
+  background-color: #12121f;
+  opacity: 1;
+  color: #fafafae0;
+}
+.classes .card h3 {
+  color: #12121f;
+  font-size: clamp(1.3rem, 2vw, 6vw);
+  line-height: clamp(1.3rem, 2vw, 6vw);
+}
+.classes .card:is(.done,.current,.nom) h3{
+  color: #fff;
+}
+.classes .card .badge{
+  position: absolute;
+  background-color: #12121f;
+  color: #fafafa;
+  padding: .1rem .3rem;
+  top: 0;
+  font-size: .7rem;
+  left: 0;
+}
+.classes .card.done .badge{
+  background-color: #17c481;
+}
+.classes .card:is(.nom,.current) .badge{
+  background-color: var(--blue);
+}
+
+.timetable{
+  width: 100%;
+  padding: 2rem;
+  overflow: auto;
+}
+

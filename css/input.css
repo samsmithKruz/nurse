@@ -7,6 +7,7 @@
 .input{
     margin-bottom: .5rem;
     display: flex;
+    flex-direction: column;
 }
 :is(input,select,textarea){
     padding: .8rem 1.4rem;
@@ -17,6 +18,9 @@
     font-size: inherit;
     resize: none;
     width: 100%;
+}
+select{
+    cursor: pointer;
 }
 :is(input,select,textarea):focus{
     box-shadow: 0 0 2px 2px #0084ff25;
@@ -30,4 +34,26 @@ input[type=submit]{
 }
 input[type=submit]:is(:focus,:hover){
     background-color: var(--blue-hover);
+}
+
+.input-group.flex input[type=submit]{
+    width: fit-content;
+}
+.input-group.flex{
+    width: 100%;
+    flex-wrap: wrap;
+}
+.input-group.flex .input-group{
+    grid-template-columns: auto 5rem;
+}
+.input-group .input:has(input[type=submit]){
+    width: fit-content;
+}
+.input-group.flex select{
+    width: 100%;
+}
+.flex_btn{
+    display: flex;
+    align-items: flex-start;
+    gap: .5rem;
 }

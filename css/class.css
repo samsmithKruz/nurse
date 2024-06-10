@@ -1,0 +1,10 @@
+.btn{
+    padding: .8rem 1.4rem !important;
+    line-height: normal;
+}
+.bg-green{
+    background-color: var(--green) !important;
+}
+.bg-green:hover{
+    background-color: var(--green-hover) !important;
+}
