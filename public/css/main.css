@@ -1,0 +1,240 @@
+@import url('./google/material-icons.css');
+@import url('./google/symbols-outlined.css');
+@font-face {
+  font-family: "Degular";
+  src: url("../fonts/DEGULARVARIABLE.TTF") format("ttf");
+}
+:root {
+  --highlight: #F1F4FD;
+  --footer-highlight: #FAFAFA;
+  --dark: #252638;
+  --dark2: #12121F;
+  --red: #FF2626;
+  --green: #2fc75c;
+  --green-hover: #80EDA1;
+  /* --blue: #212BB5; */
+  --blue: #4e73df;
+  --blue-hover: #008cff;
+  --text-light-color: #e2e2e9;
+  --text-dark-color: #283552;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+a{
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--blue);
+}
+svg path{
+  fill: var(--text-dark-color);
+}
+body {
+  font-size: 15px;
+  color: var(--text-dark-color);
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  font-family: "degular";
+  position: relative;
+}
+.text-truncate {
+  --line: 2;
+  display: -moz-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: box;
+  display: flexbox;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -webkit-line-clamp: var(--line, 1);
+  line-clamp: var(--line, 1);
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+#modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 219348;
+  background-color: #0a132227;
+  backdrop-filter: blur(2px);
+  padding: 1.5rem;
+  display: none;
+  opacity: 0;
+}
+#modal.active {
+  justify-content: center;
+  align-items: flex-start;
+  animation: enter 0.1s ease forwards;
+  display: flex;
+}
+#modal .content {
+  background-color: #fff;
+  box-shadow: 0 0 5px 3px #bec5c983;
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  top: -200%;
+}
+#modal.active .content {
+  animation: topEnter 0.2s ease forwards;
+}
+#modal .close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: .2rem 0.5rem;
+  font-size: 1.7rem;
+  line-height: 1;
+  cursor: pointer;
+  background-color: var(--red);
+  color: #fafafa;
+}
+
+.modalContent {
+  display: none;
+}
+@keyframes enter {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes topEnter {
+  to {
+    top: 0;
+  }
+}
+.wrapper {
+  max-width: 1146px;
+  margin: auto;
+}
+
+.btn-group {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 0;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.btn {
+  padding: 0.7rem 1.9rem;
+  color: inherit;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  user-select: none;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+.btn svg {
+  height: 3rem;
+  width: auto;
+}
+.btn.primary {
+  background-color: var(--blue);
+  color: #fff;
+}
+.btn.primary:hover {
+  background-color: var(--blue-hover);
+  color: #fff;
+}
+.btn.red {
+  background-color: var(--red);
+  color: #fff;
+}
+.btn.red:hover {
+  background-color: #ff0000;
+  color: #fff;
+}
+.btn.green {
+  background-color: var(--green);
+  color: #fff;
+}
+.btn.green:hover {
+  background-color: #80EDA1;
+  color: #fff;
+}
+h5._ {
+  font-size: 1.6rem;
+  color: var(--red);
+}
+h3._ {
+  font-size: clamp(34px, 3.5rem, 6vw);
+  line-height: clamp(34px, 3.5rem, 6vw);
+  margin-bottom: 1rem;
+}
+p._ {
+  font-size: clamp(16px, 1.2rem, 3vw);
+  line-height: clamp(24px, 2rem, 4vw);
+  opacity: 0.812;
+  margin-bottom: 1rem;
+}
+
+.socials a {
+  display: flex;
+  padding: 0.1rem;
+  color: var(--highlight);
+  opacity: 0.8;
+  gap: 0.2rem;
+  position: relative;
+}
+.socials svg {
+  height: 25px;
+  width: auto;
+}
+.socials .fb svg {
+  height: 15px;
+  width: auto;
+}
+.socials .tel {
+  border-left: 1px solid var(--highlight);
+  padding-left: 0.7rem;
+}
+a.logo img {
+  height: 40px;
+  width: auto;
+}
+#accord{
+  background-color: #fafafa;
+  padding: 1rem;
+}
+#accord ul{
+  display: flex;
+  list-style: none;
+  user-select: none;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: .8rem;
+  color: #868686;
+}
+#accord li:first-child{
+  color: #889aff;
+}
+#accord li:not(:last-child)::after{
+  content: '/';
+  margin-left: 1rem;
+}
+.paginations{
+  display: flex;
+  flex-wrap: wrap;
+  width: fit-content;
+}
+.paginations a{
+  user-select: none;
+  background-color: var(--blue);
+  color: var(--footer-highlight);
+  font-weight: 400;
+  line-height: 1;
+  padding: .7rem 1.4rem;
+}
+.paginations a:is(:hover,.active){
+  background-color: var(--text-dark-color);
+}

@@ -1,0 +1,64 @@
+.input-group{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: .5rem;
+}
+.input{
+    margin-bottom: .5rem;
+    display: flex;
+    flex-direction: column;
+}
+:is(input,select,textarea){
+    padding: .8rem 1.4rem;
+    border: 1px solid #a1a1a1;
+    border-radius: 4px;
+    outline: none;
+    font-family: inherit;
+    font-size: inherit;
+    resize: none;
+    width: 100%;
+}
+select{
+    cursor: pointer;
+}
+:is(input,select,textarea):focus{
+    box-shadow: 0 0 2px 2px #0084ff25;
+    border-color: #55adffb7;
+}
+input[type=submit]{
+    border: none;
+    background-color: var(--blue);
+    color: #fff;
+    cursor: pointer;
+}
+input[type=submit]:is(:focus,:hover){
+    background-color: var(--blue-hover);
+}
+
+.input-group.flex input[type=submit]{
+    width: fit-content;
+}
+.input-group.flex{
+    width: 100%;
+    flex-wrap: wrap;
+}
+.input-group.flex .input-group{
+    grid-template-columns: auto 5rem;
+}
+.input-group .input:has(input[type=submit]){
+    width: fit-content;
+}
+.input-group.flex select{
+    width: 100%;
+}
+.flex_btn{
+    display: flex;
+    align-items: flex-start;
+    gap: .5rem;
+}
+@media (max-width:500px) {
+    .input-group{
+        grid-template-columns: 1fr;
+    }
+}
