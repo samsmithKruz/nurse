@@ -22,7 +22,7 @@
   cursor: pointer;
   user-select: none;
   font-weight: 700;
-  opacity: 0.212;
+  opacity: 0.062;
 }
 .hero > span:hover {
   opacity: 0.712;
@@ -47,12 +47,12 @@
   flex: 0 0 auto;
   width: 100%;
   height: 100%;
-  padding: 3rem;
+  padding: 3rem 1rem;
   position: relative;
 }
 .hero .wrapper .text {
   padding-top: 4.5rem;
-  padding-left: 3rem;
+  padding-left: 1rem;
   max-width: 70ch;
   margin: 0;
 }
@@ -64,9 +64,11 @@
 .hero h1 {
   line-height: clamp(32px, 4.5rem, 6vw);
   color: var(--highlight);
+  max-width: 20ch;
   font-size: clamp(32px, 4.5rem, 6vw);
 }
 .hero p {
+  max-width: 30ch;
   color: var(--text-light-color);
   opacity: 0.8;
   font-size: 1.1rem;

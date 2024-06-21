@@ -65,7 +65,13 @@
   header .items a {
     padding: 0.6rem 1rem;
     font-weight: 400;
+    display: flex;
+    gap: .5em;
+    align-items: center;
     color: #848388;
+  }
+  header .items a span {
+    font-size: 1rem;
   }
   header .items a:is(:hover, .active) {
     color: var(--blue);

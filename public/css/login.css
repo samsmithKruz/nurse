@@ -39,7 +39,11 @@ h2{
 }
 .input:has(input[type='checkbox']){
     display: flex;
+    flex-direction: row;
     gap: .5rem;
+}
+.input:has(input[type='checkbox']) input{
+    width: fit-content;
 }
 .input:has(input[type='checkbox']) input{
     width: fit-content !important;

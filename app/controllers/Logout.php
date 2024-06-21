@@ -1,12 +1,12 @@
 <?php
 
-class Home extends Controller{
+class Logout extends Controller{
     public function __construct()
     {
         
     }
     public function index(){
-        
-        $this->view("home");
+        Auth::logout();
+        Auth::redirect("login");
     }
 }

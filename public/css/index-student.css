@@ -39,6 +39,7 @@
   background-color: #141f12a1;
   opacity: 1;
   color: #fafafae0;
+  cursor: pointer;
 }
 .classes .card:is(.nom,.current){
   background-color: #12121f;

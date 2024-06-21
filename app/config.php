@@ -1,6 +1,6 @@
 <?php
 
-define('APPROOT', dirname(__FILE__,2));
+define('APPROOT', dirname(__FILE__,1));
 define("APP","fn");
 define('URLROOT', 'http://localhost/fn');
 define('DB_HOST','localhost');

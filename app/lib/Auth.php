@@ -83,7 +83,7 @@ class Auth extends Database
     {
         session_start();
         session_destroy();
-        self::redirect('./signin');
+        self::redirect('login');
     }
     public static function isLoggedin($type)
     {

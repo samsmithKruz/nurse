@@ -17,7 +17,7 @@
                     $this->currentController = ucwords($url[0]);
                     unset($url[0]);
                 }else{
-                    require_once "../app/libraries/controller.php";
+                    require_once "../app/lib/controller.php";
                     $controller = new Controller;
                     $controller->view("404");
                     exit();
@@ -32,7 +32,7 @@
                     $this->currentMethod = $url[1];
                     unset($url[1]);
                 }else{
-                    require_once "../app/libraries/controller.php";
+                    require_once "../app/lib/controller.php";
                     $controller = new Controller;
                     $controller->view("404");
                     exit();
