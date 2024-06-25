@@ -79,31 +79,21 @@ require_once APPROOT . "/views/admin/inc/header.php";
     <input type="checkbox" id="content3" checked />
     <div class="content">
       <div class="notices">
-        <div class="notice">
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-            Recusandae minus atque minima laboriosam quibusdam repellat quo,
-            distinctio hic quam nostrum omnis culpa dolorem numquam beatae,
-            explicabo est, incidunt illum debitis.
-          </p>
-          <a href="#" class="delete">Delete</a>
-        </div>
-        <div class="notice">
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-            Recusandae minus atque minima laboriosam quibusdam repellat quo,
-            distinctio hic quam nostrum omnis culpa dolorem numquam beatae,
-            explicabo est, incidunt illum debitis.
-          </p>
-          <a href="#" class="delete">Delete</a>
-        </div>
+        <?php foreach($notices as $key=>$notice) {?>
+          <div class="notice">
+            <p>
+              <?=$notice->notice_text;?>
+            </p>
+            <a href="<?=URLROOT."/admin/delete_notice?id=".$notice->id;?>" class="delete">Delete</a>
+          </div>
+        <?php }?>
       </div>
-      <form action="#">
+      <form action="<?=URLROOT;?>/admin/" method="post">
         <div class="input">
-          <textarea name="notice" rows="5" id="notice" placeholder="Make a general notice to all classes"></textarea>
+          <textarea required name="file" rows="7" id="notice" placeholder="Make a general notice to all classes"></textarea>
         </div>
         <div class="input">
-          <input type="submit" value="Add" />
+          <input type="submit" name="q3" value="Add" />
         </div>
       </form>
     </div>

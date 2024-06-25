@@ -274,7 +274,8 @@ class admin_ extends Database
         }
         return $questions;
     }
-    public function getTests(){
+    public function getTests()
+    {
         $this->db->query("select * from test");
         return $this->db->resultSet();
     }
@@ -333,7 +334,6 @@ class admin_ extends Database
             'state' => 1,
             'message' => "Test started.",
         ));
-        
     }
     public function end_test($id)
     {
@@ -350,7 +350,6 @@ class admin_ extends Database
             'state' => 1,
             'message' => "Test Ended.",
         ));
-        
     }
     public function remove_test($id)
     {
@@ -367,7 +366,43 @@ class admin_ extends Database
             'state' => 1,
             'message' => "Test removed successfully.",
         ));
-        
+    }
+    public function add_notice($notice)
+    {
+        $this->db->query("insert into add_notice(notice_text) values(:notice_text)");
+        $this->db->bind(":notice_text", $notice);
+        $this->db->execute();
+        if ($this->db->rowCount() == 0) {
+            return Helpers::response(array(
+                'state' => 0,
+                'message' => "Unable to add notice.",
+            ));
+        }
+        return Helpers::response(array(
+            'state' => 1,
+            'message' => "Notice added successfully.",
+        ));
+    }
+    public function delete_notice($id)
+    {
+        $this->db->query("delete from add_notice where id=:id");
+        $this->db->bind(":id", $id);
+        $this->db->execute();
+        if ($this->db->rowCount() == 0) {
+            return Helpers::response(array(
+                'state' => 0,
+                'message' => "Notice not deleted.",
+            ));
+        }
+        return Helpers::response(array(
+            'state' => 1,
+            'message' => "Notice deleted.",
+        ));
+    }
+    public function getNotices()
+    {
+        $this->db->query("select * from add_notice");
+        return $this->db->resultSet();
     }
     public function shuffleResults($result)
     {

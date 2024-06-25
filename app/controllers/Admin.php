@@ -23,6 +23,9 @@ class Admin extends Controller
                 if (isset($_POST['q2'])) {
                     $res = $this->model->add_link($_POST);
                 }
+                if (isset($_POST['q3'])) {
+                    $res = $this->model->add_notice($_POST['file']);
+                }
             }
 
             $_SESSION[APP]->flashMessage = $res;
@@ -31,11 +34,20 @@ class Admin extends Controller
         $data['enrolled'] = $this->model->countEnrolled() - 1;
         $data['unregistered'] = $this->model->countEnrolled(1);
         $data['files'] = $this->model->getFileNames();
-        // $user = $this->model->getUser($_SESSION[APP]->email);
-        // print_r($user);exit();
-        // $data['fullname'] = $user->fullname;
-
+        $data['notices'] = $this->model->getNotices();
         $this->view("admin/index", $data);
+    }
+    public function delete_notice()
+    {
+        if (!isset($_GET['id'])) {
+            $_SESSION[APP]->flashMessage =  Helpers::response(array(
+                'state' => 0,
+                'message' => "Invalid notice.",
+            ));
+        }
+        $_SESSION[APP]->flashMessage =  $this->model->delete_notice(Auth::safe_data($_GET['id']));
+
+        Helpers::back("admin");
     }
     public function fileRemove()
     {
@@ -223,20 +235,17 @@ class Admin extends Controller
         if (!isset($_GET['id']) || !isset($_GET['type'])) {
             Auth::redirect("admin/");
         }
-        if(Auth::safe_data($_GET['type']) == 'start'){
+        if (Auth::safe_data($_GET['type']) == 'start') {
             $_SESSION[APP]->flashMessage = $this->model->start_test(Auth::safe_data($_GET['id']));
             Helpers::back('admin');
-
         }
-        if(Auth::safe_data($_GET['type']) == 'end'){
+        if (Auth::safe_data($_GET['type']) == 'end') {
             $_SESSION[APP]->flashMessage = $this->model->end_test(Auth::safe_data($_GET['id']));
             Helpers::back('admin');
-
         }
-        if(Auth::safe_data($_GET['type']) == 'remove'){
+        if (Auth::safe_data($_GET['type']) == 'remove') {
             $_SESSION[APP]->flashMessage = $this->model->remove_test(Auth::safe_data($_GET['id']));
             Helpers::back('admin');
-
         }
 
         $_SESSION[APP]->flashMessage = Helpers::response(array(
