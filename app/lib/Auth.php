@@ -14,7 +14,8 @@ class Auth extends Database
         require_once('PHPMailer/SMTP.php');
         $mail = new PHPMailer\PHPMailer(true);
         $mail->isSMTP();
-        $mail->SMTPDebug = 2;
+        $mail->SMTPDebug = 0;
+        // $mail->SMTPDebug = 2;
         $mail->Host = 'smtp.hostinger.com';
 
         $mail->SMTPAuth = true;
@@ -32,10 +33,15 @@ class Auth extends Database
 
         try {
             $mail->send();
-            return true;
+            return Helpers::response(array(
+                'state' => 1,
+                'message' => 'email sent'
+            ));
         } catch (PHPMailer\Exception $e) {
-            //print_r($e->getMessage());
-            return false;
+            return Helpers::response(array(
+                'state' => 0,
+                'message' => $e->getMessage()
+            ));
         }
     }
     public static function getMethod()
@@ -63,10 +69,6 @@ class Auth extends Database
             return 'Password is incorrect';
         }
     }
-    public static function reroute($url)
-    {
-        self::redirect(($url == 1 ? "admin/" : "user/"));
-    }
     public static function safe_data($data)
     {
         $data = trim($data);
@@ -79,6 +81,14 @@ class Auth extends Database
         header("location:" . URLROOT . "/$url");
         exit();
     }
+    public static function userExists($email)
+    {
+        $db = new Database;
+        $db->query('SELECT * FROM users WHERE LOWER(email)=:email;');
+        $db->bind(':email', strtolower(Auth::safe_data($email)));
+        $db->execute();
+        return $db->rowCount() > 0 ? true : false;
+    }
     public static function logout()
     {
         session_start();
@@ -87,25 +97,21 @@ class Auth extends Database
     }
     public static function isLoggedin($type)
     {
-        if (!isset($_SESSION[APP][$type])) {
+        if ($_SESSION[APP]->is_admin != $type) {
             self::redirect("logout/");
         }
-        return 'true';
+        return true;
     }
     public static function strongPassword($text = "", $len = 8)
     {
         return array("length" => !(strlen($text) < $len), "digit" => preg_match("/\d/", $text), "cap" => preg_match("/[A-Z]/", $text), "special" => preg_match("/[^\w\s]/", $text));
     }
-    public static function createCode($l)
+    public static function setSession($email)
     {
-
-        $min = pow(10, $l - 1);
-        $max = pow(10, $l) - 1;
-
-        do {
-            $r = random_int($min, $max);
-        } while (strlen($r) !== $l);
-
-        return $r;
+        $db = new Database;
+        $db->query('SELECT *, null as password FROM users WHERE email=:email ');
+        $db->bind(':email', $email);
+        $_SESSION[APP] = $db->single();
+        return true;
     }
 }

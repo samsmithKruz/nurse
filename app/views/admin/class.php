@@ -6,6 +6,7 @@ $styles = '
 require_once APPROOT . "/views/admin/inc/header.php";
 ?>
 <main>
+  <input type="hidden" name="t" value="<?= $t; ?>">
   <section class="container wrapper">
     <label for="content4" class="head" style="text-transform:capitalize;">
       Class <?= $type; ?>
@@ -14,7 +15,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
     <input type="checkbox" id="content4" checked />
     <div class="content">
       <div class="table">
-        <table>
+        <table id="class">
           <thead>
             <tr>
               <th>Name</th>
@@ -23,36 +24,6 @@ require_once APPROOT . "/views/admin/inc/header.php";
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><span class="text-truncate">John Doe</span></td>
-              <td>+234989231438</td>
-              <td>
-                <div class="btns">
-                  <a href="<?= URLROOT; ?>/admin/student_overview?id=1" class="blue">View</a>
-                  <a href="#" class="red">Delete</a>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><span class="text-truncate">John Doe</span></td>
-              <td>+234989231438</td>
-              <td>
-                <div class="btns">
-                  <a href="<?= URLROOT; ?>/admin/student_overview?id=1" class="blue">View</a>
-                  <a href="#" class="red">Delete</a>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><span class="text-truncate">John Doe</span></td>
-              <td>+234989231438</td>
-              <td>
-                <div class="btns">
-                  <a href="<?= URLROOT; ?>/admin/student_overview?id=1" class="blue">View</a>
-                  <a href="#" class="red">Delete</a>
-                </div>
-              </td>
-            </tr>
           </tbody>
         </table>
       </div>
@@ -66,50 +37,31 @@ require_once APPROOT . "/views/admin/inc/header.php";
     <input type="checkbox" id="content4_" checked />
     <div class="content">
       <div class="table">
-        <table>
+        <table id="classNotes">
           <thead>
             <tr>
-              <th>Filename</th>
+              <th>File</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="text-truncate">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex!</td>
-              <td>
-                <a href="<?= URLROOT; ?>/admin/file_view?id=1" class="blue">View</a>
-                <a href="#" class="red">Remove</a>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-truncate">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex!</td>
-              <td>
-                <a href="<?= URLROOT; ?>/admin/file_view?id=1" class="blue">View</a>
-                <a href="#" class="red">Remove</a>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-truncate">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex!</td>
-              <td>
-                <a href="<?= URLROOT; ?>/admin/file_view?id=1" class="blue">View</a>
-                <a href="#" class="red">Remove</a>
-              </td>
-            </tr>
           </tbody>
         </table>
       </div>
       <div class="input-group flex">
-        <form action="#">
+        <form action="<?= URLROOT; ?>/admin/class?t=<?= $t; ?>" method="post">
           <label for="">Select Uploaded File</label>
           <div class="input-group">
             <div class="input">
-              <select name="#" id="#">
+              <select name="file" required id="#">
                 <option disabled selected>Add File</option>
-                <option value="">Lecture Note</option>
+                <?php foreach ($files as $file) { ?>
+                  <option value="<?= $file->id; ?>"><?= $file->filename; ?></option>
+                <?php } ?>
               </select>
             </div>
             <div class="input">
-              <input type="submit" value="Add">
+              <input type="submit" name="q" value="Add">
             </div>
           </div>
         </form>
@@ -124,7 +76,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
     <input type="checkbox" id="content5" checked />
     <div class="content">
       <div class="table">
-        <table>
+        <table id="timetable">
           <thead>
             <tr>
               <th>Filename</th>
@@ -143,21 +95,24 @@ require_once APPROOT . "/views/admin/inc/header.php";
         </table>
       </div>
       <div class="input-group flex">
-        <form action="#">
-          <label for="">Upload Timetable</label>
+        <form action="<?= URLROOT; ?>/admin/class?t=<?= $t; ?>" method="post">
+          <label for="">Select Uploaded File</label>
           <div class="input-group">
             <div class="input">
-              <select name="#" id="#">
+              <select name="file" required id="#">
                 <option disabled selected>Add File</option>
-                <option value="">Lecture Note</option>
+                <?php foreach ($files as $file) { ?>
+                  <option value="<?= $file->id; ?>"><?= $file->filename; ?></option>
+                <?php } ?>
               </select>
             </div>
             <div class="input">
-              <input type="submit" value="Add">
+              <input type="submit" name="q1" value="Add">
             </div>
           </div>
         </form>
       </div>
+    </div>
     </div>
   </section>
   <section class="container wrapper">
@@ -168,13 +123,13 @@ require_once APPROOT . "/views/admin/inc/header.php";
     <input type="checkbox" id="content6" checked />
     <div class="content">
       <div class="table">
-        <table>
+        <table id="test">
           <thead>
             <tr>
               <th>Name</th>
               <th>Status</th>
               <th>Results</th>
-              <th>Acttion</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -194,17 +149,19 @@ require_once APPROOT . "/views/admin/inc/header.php";
         </table>
       </div>
       <div class="input-group flex">
-        <form action="#">
-          <label for="">Add Test to Class</label>
+      <form action="<?= URLROOT; ?>/admin/class?t=<?= $t; ?>" method="post">
+          <label for="">Select Uploaded File</label>
           <div class="input-group">
             <div class="input">
-              <select name="#" id="#">
-                <option disabled selected>Select test</option>
-                <option value="">Lecture Note</option>
+              <select name="file" required id="#">
+                <option disabled selected>Add Test</option>
+                <?php foreach ($tests as $test) { ?>
+                  <option value="<?= $test->id; ?>"><?= $test->name; ?></option>
+                <?php } ?>
               </select>
             </div>
             <div class="input">
-              <input type="submit" value="Add">
+              <input type="submit" name="q2" value="Add">
             </div>
           </div>
         </form>
@@ -212,6 +169,8 @@ require_once APPROOT . "/views/admin/inc/header.php";
     </div>
   </section>
 </main>
+
+<script src="<?= URLROOT; ?>/js/table.js"></script>
 <?php
 require_once APPROOT . "/views/admin/inc/footer.php";
 ?>

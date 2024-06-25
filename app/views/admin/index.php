@@ -1,5 +1,5 @@
 <?php
-$styles = '<link rel="stylesheet" href="'.URLROOT.'/css/index-admin.css">';
+$styles = '<link rel="stylesheet" href="' . URLROOT . '/css/index-admin.css">';
 require_once APPROOT . "/views/admin/inc/header.php";
 ?>
 <main>
@@ -12,24 +12,24 @@ require_once APPROOT . "/views/admin/inc/header.php";
     <div class="content">
       <div class="students">
         <div>
-          <h1>76</h1>
+          <h1><?= $enrolled; ?></h1>
           <p>
             <b>Enrolled</b>
-            <a href="<?=URLROOT;?>/admin/student?t=enrolled">View</a>
+            <a href="<?= URLROOT; ?>/admin/student?t=enrolled">View</a>
           </p>
         </div>
         <div>
-          <h1>76</h1>
+          <h1><?= $unregistered; ?></h1>
           <p>
             <b>Unregistered</b>
-            <a href="<?=URLROOT;?>/admin/student?t=unregistered">View</a>
+            <a href="<?= URLROOT; ?>/admin/student?t=unregistered">View</a>
           </p>
         </div>
         <div>
-          <h1>76</h1>
+          <h1><?= $unregistered + $enrolled; ?></h1>
           <p>
             <b>All Students</b>
-            <a href="<?=URLROOT;?>/admin/student?t=all">View</a>
+            <a href="<?= URLROOT; ?>/admin/student?t=all">View</a>
           </p>
         </div>
       </div>
@@ -43,27 +43,27 @@ require_once APPROOT . "/views/admin/inc/header.php";
     <input type="checkbox" id="content2" checked />
     <div class="content classes">
       <div class="cards">
-        <a href="<?=URLROOT;?>/admin/class?t=a" class="card nom">
+        <a href="<?= URLROOT; ?>/admin/class?t=a" class="card nom">
           <span class="badge">Ended</span>
           <h3>Google UX Design</h3>
           <p>google</p>
         </a>
-        <a href="<?=URLROOT;?>/admin/class?t=b" class="card nom">
+        <a href="<?= URLROOT; ?>/admin/class?t=b" class="card nom">
           <span class="badge">Current Class</span>
           <h3>Google UX Design</h3>
           <p>google</p>
         </a>
-        <a href="<?=URLROOT;?>/admin/class?t=c" class="card nom">
+        <a href="<?= URLROOT; ?>/admin/class?t=c" class="card nom">
           <span class="badge">Current Class</span>
           <h3>Google UX Design</h3>
           <p>google</p>
         </a>
-        <a href="<?=URLROOT;?>/admin/class?t=d" class="card nom">
+        <a href="<?= URLROOT; ?>/admin/class?t=d" class="card nom">
           <span class="badge">Current Class</span>
           <h3>Google UX Design</h3>
           <p>google</p>
         </a>
-        <a href="<?=URLROOT;?>/admin/class?t=e" class="card nom">
+        <a href="<?= URLROOT; ?>/admin/class?t=e" class="card nom">
           <span class="badge">Current Class</span>
           <h3>Google UX Design</h3>
           <p>google</p>
@@ -116,61 +116,42 @@ require_once APPROOT . "/views/admin/inc/header.php";
     <input type="checkbox" id="content4" checked />
     <div class="content">
       <div class="table">
-        <table>
+        <table id="general_library">
           <thead>
             <tr>
-              <th>Filename</th>
+              <th>File</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="text-truncate">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex!</td>
-              <td>
-              <a href="#" class="blue">View</a>
-                <a href="#" class="red">Remove</a>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-truncate">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex!</td>
-              <td>
-              <a href="#" class="blue">View</a>
-                <a href="#" class="red">Remove</a>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-truncate">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex!</td>
-              <td>
-              <a href="#" class="blue">View</a>
-                <a href="#" class="red">Remove</a>
-              </td>
-            </tr>
           </tbody>
         </table>
       </div>
       <div class="input-group flex">
-        <form action="#">
+        <form action="<?=URLROOT;?>/admin/" method="post">
           <label for="">Select Uploaded File</label>
           <div class="input-group">
             <div class="input">
-              <select name="#" id="#">
+              <select name="file" required id="#">
                 <option disabled selected>Add File</option>
-                <option value="">Lecture Note</option>
+                <?php foreach ($files as $file) { ?>
+                  <option value="<?=$file->id;?>"><?=$file->filename;?></option>
+                <?php } ?>
               </select>
             </div>
             <div class="input">
-              <input type="submit" value="Add">
+              <input type="submit" name="q1" value="Add">
             </div>
           </div>
         </form>
-        <form action="#">
+        <form action="<?=URLROOT;?>/admin/" method="post">
           <label for="">Upload Link</label>
           <div class="input-group">
             <div class="input">
-              <input type="text" placeholder="https://">
+              <input type="text" required name="link" placeholder="https://">
             </div>
             <div class="input">
-              <input type="submit" value="Add">
+              <input type="submit" name="q2" value="Add">
             </div>
           </div>
         </form>
@@ -179,6 +160,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
     </div>
   </section>
 </main>
-<?php 
+<script src="<?=URLROOT;?>/js/table.js"></script>
+<?php
 require_once APPROOT . "/views/admin/inc/footer.php";
 ?>

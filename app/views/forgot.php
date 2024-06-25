@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./css/login.css">
 </head>
 <body>
+<?= isset($_SESSION[APP]->flashMessage)?Helpers::flashMessage($_SESSION[APP]->flashMessage):"";?>
     <div class="container">
         <img src="./assets/doctr.jpg" alt="">
         <form action="#">

@@ -16,6 +16,9 @@ class Controller
         } else {
             require_once '../app/views/404.php';
         }
+        if(isset($_SESSION[APP]->flashMessage)){
+            unset($_SESSION[APP]->flashMessage);
+        }
         exit();
     }
 }

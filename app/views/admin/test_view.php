@@ -14,56 +14,25 @@ require_once APPROOT . "/views/admin/inc/header.php";
     <input type="checkbox" id="content4" checked />
     <div class="content ">
       <div class="table" style="padding: 2rem;">
-        <table>
+        <table id="test_scores">
           <thead>
             <tr>
               <th>Name</th>
-              <th>Whatsapp</th>
-              <th>Date</th>
               <th>Score</th>
-              <th>Action</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><span class="text-truncate">John Doe</span></td>
-              <td>+234989231438</td>
-              <td>12.04.2024</td>
-              <td>75%</td>
-              <td>
-                <div class="btns">
-                  <a href="<?=URLROOT;?>/admin/test_watch?id=123" class="blue">View</a>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><span class="text-truncate">John Doe</span></td>
-              <td>+234989231438</td>
-              <td>12.04.2024</td>
-              <td>75%</td>
-              <td>
-                <div class="btns">
-                  <a href="<?=URLROOT;?>/admin/test_watch?id=123" class="blue">View</a>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><span class="text-truncate">John Doe</span></td>
-              <td>+234989231438</td>
-              <td>12.04.2024</td>
-              <td>75%</td>
-              <td>
-                <div class="btns">
-                  <a href="<?=URLROOT;?>/admin/test_watch?id=123" class="blue">View</a>
-                </div>
-              </td>
-            </tr>
           </tbody>
         </table>
       </div>
+      <div class="btn-group" style="padding: 2rem;">
+      <a href="javascript:history.back()" class="btn primary">Continue</a>
+    </div>
     </div>
   </section>
 </main>
+<script src="<?= URLROOT; ?>/js/table.js"></script>
 <?php
 require_once APPROOT . "/views/admin/inc/footer.php";
 ?>

@@ -11,6 +11,7 @@
 
 </head>
 <body>
+<?= isset($_SESSION[APP]->flashMessage)?Helpers::flashMessage($_SESSION[APP]->flashMessage):"";?>
     <header class="wrapper">
         <a href="<?=URLROOT;?>/student" class="logo">
             <img src="<?=URLROOT;?>/assets/logo.svg" alt="">

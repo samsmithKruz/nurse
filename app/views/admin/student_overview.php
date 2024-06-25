@@ -15,15 +15,15 @@ require_once APPROOT . "/views/admin/inc/header.php";
     <input type="checkbox" id="content4" checked />
     <div class="content ">
       <div style="padding: 1rem 2rem; ">
-        <h3 class="_" style="font-weight: 600;">Sarah Philips</h3>
+        <h3 class="_" style="font-weight: 600; text-transform:capitalize;"><?=$fullname;?></h3>
         <div class="input-group">
           <div class="input">
             <label for="">Email</label>
-            <input type="text" placeholder="sarahphilip@gmail.com" readonly>
+            <input type="text" value="<?=$email;?>" readonly>
           </div>
           <div class="input">
             <label for="">Whatsapp</label>
-            <input type="text" placeholder="+23480182374" readonly>
+            <input type="text" value="<?=$whatsapp;?>" readonly>
           </div>
         </div>
         <div class="input-group">
@@ -31,25 +31,25 @@ require_once APPROOT . "/views/admin/inc/header.php";
             <label for="">Gender</label>
             <select name="" id="">
               <option selected disabled>Select your gender</option>
-              <option value="female">Female</option>
-              <option value="male">Male</option>
-              <option value="other">other</option>
-              <option value="none">Prefer not to say</option>
+              <option value="female" <?=$gender == "female"?"selected":"";?>>Female</option>
+              <option value="male" <?=$gender == "male"?"selected":"";?>>Male</option>
+              <option value="other" <?=$gender == "other"?"selected":"";?>>other</option>
+              <option value="none" <?=$gender == "none"?"selected":"";?>>Prefer not to say</option>
             </select>
           </div>
           <div class="input">
             <label for="">Class</label>
-            <input type="text" placeholder="Class A" readonly>
+            <input type="text" value="<?=$current_class;?>" readonly>
           </div>
         </div>
         <div class="input-group">
           <div class="input">
             <label for="">Enrollment Status</label>
-            <input type="text" placeholder="Enrolled" readonly>
+            <input type="text" value="<?=$enrollment_status==1?"Enrolled":"Unregistered";?>" readonly>
           </div>
           <div class="input">
             <label for="">Enrollment Date</label>
-            <input type="text" placeholder="10/04/2020" readonly>
+            <input type="text" value="<?=(new DateTime($enrollment_date))->format('d/m/Y');?>"  readonly>
           </div>
         </div>
         <div class="btn-group">

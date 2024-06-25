@@ -13,7 +13,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
     <input type="checkbox" id="content4" checked />
     <div class="content">
       <div class="table">
-        <table>
+        <table id="fileUpload">
           <thead>
             <tr>
               <th>Filename</th>
@@ -22,7 +22,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <!-- <tr>
               <td class="text-truncate">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex!
               </td>
@@ -31,47 +31,28 @@ require_once APPROOT . "/views/admin/inc/header.php";
                 <a href="#" class="blue">View</a>
                 <a href="#" class="red">Delete</a>
               </td>
-            </tr>
-            <tr>
-              <td class="text-truncate">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex!
-              </td>
-              <td>10.04.2024</td>
-              <td>
-                <a href="#" class="blue">View</a>
-                <a href="#" class="red">Delete</a>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-truncate">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex!
-              </td>
-              <td>10.04.2024</td>
-              <td>
-                <a href="#" class="blue">View</a>
-                <a href="#" class="red">Delete</a>
-              </td>
-            </tr>
+            </tr> -->
           </tbody>
         </table>
       </div>
-      <form action="#">
+      <form action="<?=URLROOT;?>/admin/upload" method="post" enctype="multipart/form-data">
         <label for="">Upload File</label>
         <div class="input-group">
           <div class="input">
-            <input type="text" placeholder="Enter file name" />
+            <input type="text" required name="filename" placeholder="Enter file name" />
           </div>
           <div class="input">
-            <input type="file" name="file1" id="file1" placeholder="https://" />
+            <input type="file" required name="file1" id="file1" placeholder="https://" />
           </div>
           <div class="input">
-            <input type="submit" value="Upload" />
+            <input type="submit" name="q" value="Upload" />
           </div>
         </div>
       </form>
     </div>
   </section>
 </main>
+<script src="<?=URLROOT;?>/js/table.js"></script>
 <?php
 require_once APPROOT . "/views/admin/inc/footer.php";
 ?>

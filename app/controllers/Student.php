@@ -1,9 +1,11 @@
 <?php
 
 class Student extends Controller{
+    private $model;
     public function __construct()
     {
-        
+        // Auth::isLogged(STUDENT);
+        // $this->model = $this->model("student_");
     }
     public function index(){
         

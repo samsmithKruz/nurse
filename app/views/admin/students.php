@@ -3,15 +3,16 @@ $styles = '<link rel="stylesheet" href="' . URLROOT . '/css/index-admin.css">';
 require_once APPROOT . "/views/admin/inc/header.php";
 ?>
 <main>
+  <input type="hidden" name="t" value="<?=$type;?>">
   <section class="container wrapper">
-    <label for="content4" class="head">
+    <label for="content4" style="text-transform: capitalize;" class="head">
       <?=$type;?> Students
       <span class="material-symbols-outlined"> arrow_right </span>
     </label>
     <input type="checkbox" id="content4" checked />
     <div class="content">
       <div class="table">
-        <table>
+        <table id="students">
           <thead>
             <tr>
               <th>Name</th>
@@ -21,45 +22,13 @@ require_once APPROOT . "/views/admin/inc/header.php";
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><span class="text-truncate">John Doe</span></td>
-              <td>+234989231438</td>
-              <td>12.04.2024</td>
-              <td>
-                <div class="btns">
-                  <a href="#">View</a>
-                  <a href="#" class="red">Remove</a>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><span class="text-truncate">John Doe</span></td>
-              <td>+234989231438</td>
-              <td>12.04.2024</td>
-              <td>
-                <div class="btns">
-                  <a href="#">View</a>
-                  <a href="#" class="red">Remove</a>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><span class="text-truncate">John Doe</span></td>
-              <td>+234989231438</td>
-              <td>12.04.2024</td>
-              <td>
-                <div class="btns">
-                  <a href="#">View</a>
-                  <a href="#" class="red">Remove</a>
-                </div>
-              </td>
-            </tr>
           </tbody>
         </table>
       </div>
     </div>
   </section>
 </main>
+<script src="<?=URLROOT;?>/js/table.js"></script>
 <?php
 require_once APPROOT . "/views/admin/inc/footer.php";
 ?>

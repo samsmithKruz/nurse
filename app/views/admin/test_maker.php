@@ -15,7 +15,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
     <div class="content ">
       <div style="padding: 2rem; width: 100%;">
         <div class="table" style="padding: 0;">
-          <table>
+          <table id="test_maker">
             <thead>
               <tr>
                 <th>Name</th>
@@ -47,6 +47,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
     </div>
   </section>
 </main>
+<script src="<?=URLROOT;?>/js/table.js"></script>
 <?php
 require_once APPROOT . "/views/admin/inc/footer.php";
 ?>

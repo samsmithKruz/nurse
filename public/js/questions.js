@@ -5,32 +5,33 @@ let question = () => {
     view = n;
     ++n;
     // l = n.length || 1;
-    question_container.innerHTML += `
+    let c= `
         <div class="question ">
             <div class="input">
                 <label for="">(${n} / <span class="total_questions"></span>)</label>
-                <textarea required name="q${n}" rows="10" id="" placeholder="Enter question here"></textarea>
+                <textarea onkeypress="this.value==this.value" required name="q${n}" rows="10" id="" placeholder="Enter question here"></textarea>
             </div>
             
             <div class="options">
                 <h4 style="font-weight: 400; margin-top: 2rem;">Enter Options</h4>
                 <div class="input" style="padding-top: .5rem;">
                 <label for="">Enter Correct option</label>
-                <input required type="text" name="correct_option_q${n}" placeholder="Correct option">
+                <input onkeypress="this.value==this.value" required type="text" name="correct_option_q${n}" placeholder="Correct option">
                 </div>
                 <h4 style="font-weight: 400; margin-top: 2rem;">Other Options</h4>
                 <div class="input">
-                <input required type="text" name="option1_q${n}" placeholder="options">
+                <input onkeypress="this.value==this.value" required type="text" name="option1_q${n}" placeholder="options">
                 </div>
                 <div class="input">
-                <input required type="text" name="option2_q${n}" placeholder="options">
+                <input onkeypress="this.value==this.value" required type="text" name="option2_q${n}" placeholder="options">
                 </div>
                 <div class="input">
-                <input required type="text" name="option3_q${n}" placeholder="options">
+                <input onkeypress="this.value==this.value" required type="text" name="option3_q${n}" placeholder="options">
                 </div>
             </div>
         </div>
     `;
+    question_container.insertAdjacentHTML('beforeend',c)
     let i_;
     let total_questions = document.querySelectorAll(".questions .question");
     total_questions.forEach((el, i) => {
@@ -75,8 +76,6 @@ let loadView = (i) => {
 
 }
 let _view = (n) => {
-    console.clear()
-    console.log('show: ',n);
     let a = document.querySelectorAll(".paginations a");
     question_container.querySelectorAll(".questions .question").forEach((el, i) => {
         a[i].classList.remove("active");
