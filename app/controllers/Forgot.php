@@ -61,10 +61,14 @@ class Forgot extends Controller
             ));
             Auth::redirect("forgot");
         }
-        $user_id = $this->model->validateToken(Auth::safe_data($_POST['token']));
-        if ($user_id) {
+        $token = $this->model->validateToken(Auth::safe_data($_POST['token']));
+        if ($token) {
+            $user_id = $token->user_id;
             $res = $this->model->updatePassword($user_id, $_POST);
             $_SESSION[APP]->flashMessage = $res;
+            if($res->message == 'Password do not match.'){
+                Auth::redirect("forgot/reset_?token=".Auth::safe_data($_POST['token']));
+            }
         }
 
         Auth::redirect("forgot");

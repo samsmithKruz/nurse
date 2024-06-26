@@ -127,7 +127,7 @@ class main_ extends Database
             ));
         }
         $code = bin2hex(random_bytes(5));
-        $this->db->query("delete from reset_link where email=:email");
+        $this->db->query("delete from reset_link where user_id=:email");
         $this->db->bind(":email", $email);
         $this->db->execute();
 
