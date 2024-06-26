@@ -43,31 +43,11 @@ require_once APPROOT . "/views/admin/inc/header.php";
     <input type="checkbox" id="content2" checked />
     <div class="content classes">
       <div class="cards">
-        <a href="<?= URLROOT; ?>/admin/class?t=a" class="card nom">
-          <span class="badge">Ended</span>
-          <h3>Google UX Design</h3>
-          <p>google</p>
-        </a>
-        <a href="<?= URLROOT; ?>/admin/class?t=b" class="card nom">
-          <span class="badge">Current Class</span>
-          <h3>Google UX Design</h3>
-          <p>google</p>
-        </a>
-        <a href="<?= URLROOT; ?>/admin/class?t=c" class="card nom">
-          <span class="badge">Current Class</span>
-          <h3>Google UX Design</h3>
-          <p>google</p>
-        </a>
-        <a href="<?= URLROOT; ?>/admin/class?t=d" class="card nom">
-          <span class="badge">Current Class</span>
-          <h3>Google UX Design</h3>
-          <p>google</p>
-        </a>
-        <a href="<?= URLROOT; ?>/admin/class?t=e" class="card nom">
-          <span class="badge">Current Class</span>
-          <h3>Google UX Design</h3>
-          <p>google</p>
-        </a>
+        <?php foreach (CLASSESS as $key => $class) { ?>
+          <a href="<?= URLROOT; ?>/admin/class?t=<?=$key;?>" class="card nom">
+            <h3><?=$class;?></h3>
+          </a>
+        <?php } ?>
       </div>
     </div>
   </section>
@@ -79,16 +59,16 @@ require_once APPROOT . "/views/admin/inc/header.php";
     <input type="checkbox" id="content3" checked />
     <div class="content">
       <div class="notices">
-        <?php foreach($notices as $key=>$notice) {?>
+        <?php foreach ($notices as $key => $notice) { ?>
           <div class="notice">
             <p>
-              <?=$notice->notice_text;?>
+              <?= $notice->notice_text; ?>
             </p>
-            <a href="<?=URLROOT."/admin/delete_notice?id=".$notice->id;?>" class="delete">Delete</a>
+            <a href="<?= URLROOT . "/admin/delete_notice?id=" . $notice->id; ?>" class="delete">Delete</a>
           </div>
-        <?php }?>
+        <?php } ?>
       </div>
-      <form action="<?=URLROOT;?>/admin/" method="post">
+      <form action="<?= URLROOT; ?>/admin/" method="post">
         <div class="input">
           <textarea required name="file" rows="7" id="notice" placeholder="Make a general notice to all classes"></textarea>
         </div>
@@ -118,14 +98,14 @@ require_once APPROOT . "/views/admin/inc/header.php";
         </table>
       </div>
       <div class="input-group flex">
-        <form action="<?=URLROOT;?>/admin/" method="post">
+        <form action="<?= URLROOT; ?>/admin/" method="post">
           <label for="">Select Uploaded File</label>
           <div class="input-group">
             <div class="input">
               <select name="file" required id="#">
                 <option disabled selected>Add File</option>
                 <?php foreach ($files as $file) { ?>
-                  <option value="<?=$file->id;?>"><?=$file->filename;?></option>
+                  <option value="<?= $file->id; ?>"><?= $file->filename; ?></option>
                 <?php } ?>
               </select>
             </div>
@@ -134,7 +114,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
             </div>
           </div>
         </form>
-        <form action="<?=URLROOT;?>/admin/" method="post">
+        <form action="<?= URLROOT; ?>/admin/" method="post">
           <label for="">Upload Link</label>
           <div class="input-group">
             <div class="input">
@@ -150,7 +130,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
     </div>
   </section>
 </main>
-<script src="<?=URLROOT;?>/js/table.js"></script>
+<script src="<?= URLROOT; ?>/js/table.js"></script>
 <?php
 require_once APPROOT . "/views/admin/inc/footer.php";
 ?>

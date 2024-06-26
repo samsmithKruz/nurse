@@ -14,7 +14,7 @@ main{
     border-bottom: 1px solid #bdbdbd38;
     background-color: #fff;
     position: sticky;
-    top: 4rem;
+    top: 3rem;
     z-index: 10;
     display: flex;
     flex-wrap: wrap;

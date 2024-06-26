@@ -55,7 +55,7 @@ class Api extends Controller
     }
     public function getAllUsers($params)
     {
-        $_ = empty($params)? "" : " AND enrollment_status =" . $params[0];
+        $_ = empty($params) ? "" : " AND enrollment_status =" . $params[0];
         $start = $_POST['start'];
         $length = $_POST['length'];
         $searchValue = $_POST['search']['value'];
@@ -173,7 +173,66 @@ class Api extends Controller
         $data2 = $this->mainModel->getData($sql2);
         $total2 = $this->mainModel->getData("select count(id) as total from add_link where section_type='general_library'")[0]->total;
 
-        $data_ = array_merge($data,$data2);
+        $data_ = array_merge($data, $data2);
+        $total_ = $total + $total2;
+
+        echo json_encode(array('recordsTotal' => $total_, 'recordsFiltered' => count($data_), "data" => $data_));
+        exit();
+    }
+    public function generalLibrary_()
+    {
+        $start = $_POST['start'];
+        $length = $_POST['length'];
+        $searchValue = $_POST['search']['value'];
+        $orderColumnIndex = @$_POST['order'][0]['column'];
+        $orderColumnName = @$_POST['columns'][$orderColumnIndex]['data'];
+        $orderDirection = @$_POST['order'][0]['dir'];
+
+        $sql = "
+        SELECT 
+            add_file.id,
+            'file' as type,
+            file_uploads.filename,
+            file_uploads.source,
+            file_uploads.date
+        FROM add_file 
+        LEFT JOIN file_uploads on 
+            add_file.file_id = file_uploads.id
+        where (add_file.section_type='general_library')  ";
+        if (!empty($searchValue)) {
+            $sql .= " AND (file_uploads.filename like '%$searchValue%') ";
+        }
+        if ($orderColumnName != "") {
+            $sql .= " order by file_uploads.$orderColumnName $orderDirection";
+        }
+        $sql .= " limit $start, $length";
+        $data = $this->mainModel->getData($sql);
+        $total = $this->mainModel->getData("select count(id) as total from add_file where section_type='general_library'")[0]->total;
+
+
+        // Link search 
+
+        $sql2 = "
+        SELECT 
+            id,
+            'link' as type,
+            filename,
+            filename as source, 
+            date
+        FROM add_link 
+        where (section_type='general_library')  ";
+
+        if (!empty($searchValue)) {
+            $sql2 .= " AND (filename like '%$searchValue%') ";
+        }
+        if ($orderColumnName != "") {
+            $sql2 .= " order by $orderColumnName $orderDirection";
+        }
+        $sql2 .= " limit $start, $length";
+        $data2 = $this->mainModel->getData($sql2);
+        $total2 = $this->mainModel->getData("select count(id) as total from add_link where section_type='general_library'")[0]->total;
+
+        $data_ = array_merge($data, $data2);
         $total_ = $total + $total2;
 
         echo json_encode(array('recordsTotal' => $total_, 'recordsFiltered' => count($data_), "data" => $data_));
@@ -231,10 +290,43 @@ class Api extends Controller
         $data2 = $this->mainModel->getData($sql2);
         $total2 = $this->mainModel->getData("select count(id) as total from add_link where section_type='general_library'")[0]->total;
 
-        $data_ = array_merge($data,$data2);
+        $data_ = array_merge($data, $data2);
         $total_ = $total + $total2;
 
         echo json_encode(array('recordsTotal' => $total_, 'recordsFiltered' => count($data_), "data" => $data_));
+        exit();
+    }
+    public function classNotes_($params)
+    {
+        $_ = $params[0];
+        $start = $_POST['start'];
+        $length = $_POST['length'];
+        $searchValue = $_POST['search']['value'];
+        $orderColumnIndex = @$_POST['order'][0]['column'];
+        $orderColumnName = @$_POST['columns'][$orderColumnIndex]['data'];
+        $orderDirection = @$_POST['order'][0]['dir'];
+
+        $sql = "
+        SELECT 
+            add_file.id,
+            file_uploads.filename,
+            file_uploads.date,
+            file_uploads.source 
+        FROM add_file 
+        LEFT JOIN file_uploads on 
+            add_file.file_id = file_uploads.id
+        where (add_file.section_type='$_')  ";
+        if (!empty($searchValue)) {
+            $sql .= " AND (file_uploads.filename like '%$searchValue%') ";
+        }
+        if ($orderColumnName != "") {
+            $sql .= " order by file_uploads.$orderColumnName $orderDirection";
+        }
+        $sql .= " limit $start, $length";
+        $data = $this->mainModel->getData($sql);
+        $total = $this->mainModel->getData("select count(id) as total from add_file where section_type='general_library'")[0]->total;
+
+        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => count($data), "data" => $data));
         exit();
     }
     public function timetable($params)
@@ -305,7 +397,7 @@ class Api extends Controller
     }
     public function test($params)
     {
-        $_ = empty($params)? "" : " AND class ='" . $params[0]."'";
+        $_ = empty($params) ? "" : " AND class ='" . $params[0] . "'";
         $start = $_POST['start'];
         $length = $_POST['length'];
         $searchValue = $_POST['search']['value'];
@@ -331,6 +423,51 @@ class Api extends Controller
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
         $total = $this->mainModel->getData("select count(id) as total from add_test where (1=1) $_ ")[0]->total;
+
+
+        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => count($data), "data" => $data));
+        exit();
+    }
+    public function student_test($params)
+    {
+        $user_id = $_SESSION[APP]->email;
+        $_ = $params[0];
+        $start = $_POST['start'];
+        $length = $_POST['length'];
+        $searchValue = $_POST['search']['value'];
+        $orderColumnIndex = @$_POST['order'][0]['column'];
+        $orderColumnName = @$_POST['columns'][$orderColumnIndex]['data'];
+        $orderDirection = @$_POST['order'][0]['dir'];
+
+        $sql = "
+        SELECT 
+            t.name,
+            t.id,
+            ts.score
+        FROM 
+            users u
+        JOIN 
+            add_test at ON 
+            u.current_class = at.class
+        JOIN
+            test t ON
+            at.test_id = t.id
+        LEFT JOIN
+            test_score ts ON 
+            u.email = ts.user_id AND t.id = ts.test_id
+        WHERE
+            at.status = 1 AND u.email = '$user_id'
+            
+        ";
+        if (!empty($searchValue)) {
+            $sql .= " AND (t.name like '%$searchValue%') ";
+        }
+        if ($orderColumnName != "") {
+            $sql .= " order by t.name $orderDirection";
+        }
+        $sql .= " limit $start, $length";
+        $data = $this->mainModel->getData($sql);
+        $total = $this->mainModel->getData("select count(id) as total from add_test where class= '$_' ")[0]->total;
 
 
         echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => count($data), "data" => $data));

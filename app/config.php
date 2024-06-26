@@ -20,3 +20,14 @@ define('MAIL_PASSWORD', 'Vinotec@12');
 define('INFO_LOCATION', '5 Preston Court. Burton Latimer, United Kingdom, NN15 5LR');
 
 define('DOMAIN', 'http://localhost');
+
+define("STUDENT_COUNSELLOR_NAME","JAMES AMOS");
+define("STUDENT_COUNSELLOR_EMAIL","jamesamos@gmail.com");
+define("STUDENT_COUNSELLOR_WHATSAPP","+23410298348789");
+
+define("CLASSESS",[
+    "nclex1"=>"NCLEX 1",
+    "nclex2"=>"NCLEX 2",
+    "nclex3"=>"NCLEX 3",
+    "nclex4"=>"NCLEX 4",
+]);

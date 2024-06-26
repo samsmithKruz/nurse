@@ -15,32 +15,32 @@
 </head>
 
 <body>
-  <input type="hidden" name="baseurl" value="<?=URLROOT;?>">
+  <input type="hidden" name="baseurl" value="<?= URLROOT; ?>">
   <?= isset($_SESSION[APP]->flashMessage) ? Helpers::flashMessage($_SESSION[APP]->flashMessage) : ""; ?>
   <header class="wrapper">
     <a href="<?= URLROOT; ?>/admin" class="logo">
       <img src="<?= URLROOT; ?>/assets/logo.svg" alt="" />
-      <span>NCLEX (June/July)</span>
+      <!-- <span>NCLEX (June/July)</span> -->
     </a>
     <div class="dropdown">
       <label for="u">
-        <?=$_SESSION[APP]->fullname;?>
+        <?= $_SESSION[APP]->fullname; ?>
         <span class="material-symbols-outlined">account_circle</span>
       </label>
       <input type="checkbox" name="u" id="u" />
       <div class="items">
-        <a href="<?= URLROOT; ?>/admin/profile" class="active">
+        <a href="<?= URLROOT; ?>/admin/profile">
           <span class="material-symbols-outlined">account_circle</span>
           Profile
         </a>
         <a href="<?= URLROOT; ?>/admin/upload">
-        <span class="material-symbols-outlined">backup</span>
-        File Upload</a>
+          <span class="material-symbols-outlined">backup</span>
+          File Upload</a>
         <a href="<?= URLROOT; ?>/admin/test_maker">
           <span class="material-symbols-outlined">edit_calendar</span>
-          
+
           Test maker</a>
-          <a href="<?= URLROOT; ?>/logout">
+        <a href="<?= URLROOT; ?>/logout">
           <span class="material-symbols-outlined">logout</span>
 
           logout

@@ -14,53 +14,53 @@ require_once APPROOT . "/views/student/inc/header.php";
     </label>
     <input type="checkbox" id="content4" checked />
     <div class="content">
-      <div style="padding: 1rem 2rem">
+      <form action="<?=URLROOT;?>/student/profile" method="post" style="padding: 1rem 2rem; width:100%;">
         <div class="input-group">
           <div class="input">
             <label for="">Full Name</label>
-            <input type="text" placeholder="John Doe" />
+            <input name="fullname" type="text" value="<?= $fullname; ?>"  />
           </div>
           <div class="input">
             <label for="">Email</label>
-            <input type="text" placeholder="johndoe@example.com" readonly />
+            <input type="text" value="<?= $email; ?>" readonly />
           </div>
         </div>
         <div class="input-group">
           <div class="input">
             <label for="">Whatsapp</label>
-            <input type="text" placeholder="+234893274823" />
+            <input name="whatsapp" type="text" value="<?= $whatsapp; ?>" placeholder="" />
           </div>
           <div class="input">
             <label for="">Class</label>
-            <input type="text" placeholder="Class A" readonly />
+            <input type="text" value="<?= $current_class; ?>" placeholder="" readonly />
           </div>
         </div>
         <div class="input-group">
           <div class="input">
             <label for="">Gender</label>
-            <select name="" id="">
+            <select name="gender" id="">
               <option selected disabled>Select your gender</option>
-              <option value="female">Female</option>
-              <option value="male">Male</option>
-              <option value="other">other</option>
-              <option value="none">Prefer not to say</option>
+              <option <?= $gender == "female" ? "selected" : ""; ?> value="female">Female</option>
+              <option <?= $gender == "male" ? "selected" : ""; ?> value="male">Male</option>
+              <option <?= $gender == "other" ? "selected" : ""; ?> value="other">other</option>
+              <option <?= $gender == "none" ? "selected" : ""; ?> value="none">Prefer not to say</option>
             </select>
           </div>
           <div class="input">
             <label for="">Enrollment Status</label>
-            <input type="text" placeholder="Enrolled" readonly />
+            <input type="text" placeholder="<?= $enrollment_status == 1 ? "Enrolled" : "Not Enrolled"; ?>" readonly />
           </div>
         </div>
         <div class="input-group">
           <div class="input">
             <label for="">Enrollment Date</label>
-            <input type="text" placeholder="10.04.2024" readonly />
+            <input type="text" placeholder="<?= date('d.m.Y', strtotime($enrollment_date)); ?>" readonly />
           </div>
         </div>
         <div class="btn-group">
-          <a href="#" class="btn green">Save</a>
+          <input type="submit" name="q" style="width: fit-content;" class="btn green" value="Update">
         </div>
-      </div>
+      </form>
     </div>
   </section>
   <section class="container wrapper">
@@ -70,27 +70,27 @@ require_once APPROOT . "/views/student/inc/header.php";
     </label>
     <input type="checkbox" id="content5" checked />
     <div class="content">
-      <div style="padding: 1rem 2rem">
+      <form action="<?=URLROOT;?>/student/profile" method="post" style="padding: 1rem 2rem; width:100%;">
         <div class="input-group">
           <div class="input">
             <label for="">Current Password</label>
-            <input type="password" placeholder="********" />
+            <input type="password" name="current" required placeholder="********" />
           </div>
         </div>
         <div class="input-group">
           <div class="input">
             <label for="">New Password</label>
-            <input type="password" placeholder="********" />
+            <input type="password" name="new" required placeholder="********" />
           </div>
           <div class="input">
             <label for="">Confirm Password</label>
-            <input type="password" placeholder="********" />
+            <input type="password" name="confirm" required placeholder="********" />
           </div>
         </div>
         <div class="btn-group">
-          <a href="#" class="btn green">Save</a>
+          <input type="submit" name="q1" value="Update" class="btn green" style="width: fit-content;">
         </div>
-      </div>
+      </form>
     </div>
   </section>
 </main>

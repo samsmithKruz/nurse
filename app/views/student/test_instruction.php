@@ -9,8 +9,8 @@ require_once APPROOT . "/views/student/inc/header.php";
 <main>
   <section class="wrapper">
     <h2>Test Details</h2>
-    <p>Name: <i>Test on Bladder </i></p>
-    <p>Time: <i>25minutes </i></p>
+    <p>Name: <i>Test on <?=$test_details->name;?> </i></p>
+    <p>Time: <i><?=$test_details->time;?> minutes </i></p>
     <br>
     <h2>Instructions</h2>
     <p>

@@ -14,50 +14,52 @@ require_once APPROOT . "/views/admin/inc/header.php";
     </label>
     <input type="checkbox" id="content4" checked />
     <div class="content ">
-      <div style="padding: 1rem 2rem; ">
-        <h3 class="_" style="font-weight: 600; text-transform:capitalize;"><?=$fullname;?></h3>
+      <form method="post" action="<?= URLROOT; ?>/admin/student_overview?id=<?=Auth::safe_data($_GET['id']);?>" style="padding: 1rem 2rem; ">
+        <h3 class="_" style="font-weight: 600; text-transform:capitalize;"><?= $fullname; ?></h3>
         <div class="input-group">
           <div class="input">
             <label for="">Email</label>
-            <input type="text" value="<?=$email;?>" readonly>
+            <input type="text" value="<?= $email; ?>" readonly>
           </div>
           <div class="input">
             <label for="">Whatsapp</label>
-            <input type="text" value="<?=$whatsapp;?>" readonly>
+            <input type="text" readonly value="<?= $whatsapp; ?>">
           </div>
         </div>
+        <input type="hidden" name="email" value="<?= $email; ?>">
         <div class="input-group">
           <div class="input">
             <label for="">Gender</label>
-            <select name="" id="">
-              <option selected disabled>Select your gender</option>
-              <option value="female" <?=$gender == "female"?"selected":"";?>>Female</option>
-              <option value="male" <?=$gender == "male"?"selected":"";?>>Male</option>
-              <option value="other" <?=$gender == "other"?"selected":"";?>>other</option>
-              <option value="none" <?=$gender == "none"?"selected":"";?>>Prefer not to say</option>
-            </select>
+            <input type="text" readonly value="<?= $gender; ?>">
           </div>
           <div class="input">
             <label for="">Class</label>
-            <input type="text" value="<?=$current_class;?>" readonly>
+            <select name="class" id="">
+              <option selected disabled>Select class to enroll</option>
+              <?php foreach (CLASSESS as $key => $class) { ?>
+                <option <?=$current_class == $key?"selected":"";?> value="<?= $key; ?>"><?= $class; ?></option>
+              <?php } ?>
+            </select>
           </div>
         </div>
         <div class="input-group">
           <div class="input">
             <label for="">Enrollment Status</label>
-            <input type="text" value="<?=$enrollment_status==1?"Enrolled":"Unregistered";?>" readonly>
+            <select name="enrollment" id="">
+              <option value="1" <?= $enrollment_status == 1 ? "selected" : ""; ?>>Enrolled</option>
+              <option value="0" <?= $enrollment_status == 0 ? "selected" : ""; ?>>Unregistered</option>
+            </select>
           </div>
           <div class="input">
             <label for="">Enrollment Date</label>
-            <input type="text" value="<?=(new DateTime($enrollment_date))->format('d/m/Y');?>"  readonly>
+            <input type="date" name="enrollment_date" value="<?= (new DateTime($enrollment_date))->format('Y-m-d'); ?>">
           </div>
         </div>
         <div class="btn-group">
-          <a href="#" class="btn green">Update</a>
-          <a href="#" class="btn primary">Enroll</a>
-          <a href="#" class="btn red">Unregister</a>
+          <input type="submit" name="q1" value="Update" class="btn green" style="width: fit-content;">
+          <input type="submit" name="q2" value="Unregister" class="btn red" style="width: fit-content;">
         </div>
-      </div>
+      </form>
     </div>
   </section>
 </main>

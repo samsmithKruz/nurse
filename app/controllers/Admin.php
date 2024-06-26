@@ -3,20 +3,17 @@
 class Admin extends Controller
 {
     private $model;
+    private $modelStudent;
     public function __construct()
     {
         Auth::isLoggedin(ADMIN);
         $this->model = $this->model("admin_");
+        $this->modelStudent = $this->model("student_");
     }
     public function index()
     {
         if (Auth::getMethod() == 'POST') {
-            if (!isset($_POST['file'])) {
-                $res = Helpers::response(array(
-                    'state' => 0,
-                    'message' => "File not selected.",
-                ));
-            } else {
+            if (isset($_POST['file']) || isset($_POST['link'])) {
                 if (isset($_POST['q1'])) {
                     $res = $this->model->add_file($_POST['file'], 'general_library');
                 }
@@ -26,6 +23,11 @@ class Admin extends Controller
                 if (isset($_POST['q3'])) {
                     $res = $this->model->add_notice($_POST['file']);
                 }
+            } else {
+                $res = Helpers::response(array(
+                    'state' => 0,
+                    'message' => "File not selected.",
+                ));
             }
 
             $_SESSION[APP]->flashMessage = $res;
@@ -71,7 +73,7 @@ class Admin extends Controller
             ));
             Auth::redirect("admin");
         }
-        $_SESSION[APP]->flashMessage = $this->model->remove_student(Auth::safe_data($_GET));
+        $_SESSION[APP]->flashMessage = $this->model->remove_student(Auth::safe_data($_GET['id']));
 
         Helpers::back('admin');
     }
@@ -93,7 +95,6 @@ class Admin extends Controller
     }
     public function test_maker()
     {
-
         $this->view("admin/test_maker");
     }
     public function new_test()
@@ -105,8 +106,19 @@ class Admin extends Controller
     }
     public function profile()
     {
+        if(Auth::getMethod() == 'POST'){
+            if(isset($_POST['q'])){
+                $res = $this->modelStudent->updateProfile($_POST);
+                $_SESSION[APP]->flashMessage = $res;
+            }
+            if(isset($_POST['q1'])){
+                $res = $this->modelStudent->updatePassword($_POST);
+                $_SESSION[APP]->flashMessage = $res;
+            }
+        }
+        $data = $this->model->getUser($_SESSION[APP]->email);
 
-        $this->view("admin/profile_settings");
+        $this->view("admin/profile_settings",$data);
     }
 
     public function student()
@@ -180,8 +192,22 @@ class Admin extends Controller
         if (!isset($_GET['id'])) {
             Auth::redirect("admin/");
         }
+        if(Auth::getMethod() == 'POST'){
+            $res = Helpers::response(array(
+                'state' => 0,
+                'message' => "Error: Unknown operation.",
+            ));
+            if(isset($_POST['q2'])){
+                $res = $this->model->unregisterUser($_POST);
+            }
+            if(isset($_POST['q1'])){
+                $res = $this->model->updateUser($_POST);
+            }
+            $_SESSION[APP]->flashMessage = $res;
+        }
         $data = array();
         $data = $this->model->getUser(Auth::safe_data($_GET['id']));
+        // print_r($data);exit();
         $this->view("admin/student_overview", $data);
     }
     public function test_view()

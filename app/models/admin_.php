@@ -430,7 +430,7 @@ class admin_ extends Database
     }
     public function remove_student($email)
     {
-        $sql = "delete from users where email=:email and not is_admin = 1";
+        $sql = "delete from users where email=:email and not is_admin = 1; delete from test_score where user_id=:email";
         $this->db->query($sql);
         $this->db->bind(":email", $email);
         $this->db->execute();
@@ -548,4 +548,115 @@ class admin_ extends Database
             'message' => "File not found in database.",
         ));
     }
+    function markTest($post)
+    {
+        $id = Auth::safe_data($post['id']);
+
+        $this->db->query("select score from test_score where test_id=:test_id and user_id=:user_id");
+        $this->db->bind(":test_id",$id);
+        $this->db->bind(":user_id",$_SESSION[APP]->email);
+        $this->db->execute();
+        if($this->db->rowCount() > 0){
+            return Helpers::response(array(
+                'state' => 0,
+                'message' => "Test already submitted.",
+            ));
+        }
+
+
+
+        $score = 0;
+        $questions = array_filter($post, function ($key) {
+            return $key !== 'id';
+        }, ARRAY_FILTER_USE_KEY);
+        $this->db->query("select count(correct_op) as total from test_questions where test_id=:test_id");
+        $this->db->bind(":test_id", $id);
+        $total_questions = $this->db->single()->total;
+        foreach ($questions as $key => $value) {
+            $this->db->query("select correct_op from test_questions where question_id=:question_id and test_id=:test_id and correct_op=:correct_op");
+            $this->db->bind(":test_id", $id);
+            $this->db->bind(":correct_op", $value);
+            $this->db->bind(":question_id", $key);
+            $this->db->execute();
+            if ($this->db->rowCount() > 0) {
+                $score++;
+            }
+        }
+        $result = number_format(($score / $total_questions) * 100, 0);
+        $this->db->query("insert into test_score(test_id,user_id,score) values(:test_id,:user_id,:score)");
+        $this->db->bind(":test_id",$id);
+        $this->db->bind(":user_id",$_SESSION[APP]->email);
+        $this->db->bind(":score",$result);
+        $this->db->execute();
+        return Helpers::response(array(
+            'state' => 1,
+            'message' => "Test submitted.",
+        ));
+    }
+    function getTestScore($id)
+    {
+
+        $this->db->query("
+        SELECT 
+            test_score.score,
+            test.name,
+            test.time
+        from 
+            test_score
+        LEFT join test on 
+            test.id = test_score.test_id
+        where 
+            test_score.test_id=:test_id and test_score.user_id=:user_id
+        ");
+        $this->db->bind(":test_id",$id);
+        $this->db->bind(":user_id",$_SESSION[APP]->email);
+        return $this->db->single();
+    }
+    function updateUser($post){
+        $email = @Auth::safe_data($post['email']);
+        $enrollment = @Auth::safe_data($post['enrollment']);
+        $enrollment_date = @Auth::safe_data($post['enrollment_date']);
+        $class = @Auth::safe_data($post['class']) ?? "";
+
+        $sql = "update users set enrollment_status =:enrollment, enrollment_date =CAST(:date AS DATETIME)";
+        if(strlen($class) > 0){
+            $sql .= ", current_class = '$class'";
+        }
+        $sql .= " where email=:email";
+        $this->db->query($sql);
+        $this->db->bind(":email",$email);
+        $this->db->bind(":enrollment",$enrollment);
+        $this->db->bind(":date",$enrollment_date);
+        $this->db->execute();
+        if($this->db->rowCount() > 0){
+            return Helpers::response(array(
+                'state' => 1,
+                'message' => "Student updated.",
+            ));
+        }
+        return Helpers::response(array(
+            'state' => 0,
+            'message' => "No changes made.",
+        ));
+    }
+    function unregisterUser($post){
+        $email = @Auth::safe_data($post['email']);
+
+        $sql = "update users set enrollment_status =0, enrollment_date ='0000-00-00 00:00:00', current_class=''";
+        $sql .= " where email=:email";
+        $this->db->query($sql);
+        $this->db->bind(":email",$email);
+        $this->db->execute();
+        if($this->db->rowCount() > 0){
+            return Helpers::response(array(
+                'state' => 1,
+                'message' => "Student Unregistered.",
+            ));
+        }
+        return Helpers::response(array(
+            'state' => 0,
+            'message' => "No changes made.",
+        ));
+    }
+    
 }

@@ -23,7 +23,7 @@
   background-color: #fafafa;
   position: relative;
   padding-top: 2.5rem;
-  opacity: .512;
+  /* opacity: .512; */
   cursor: not-allowed;
   color: inherit;
 }

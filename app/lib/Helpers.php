@@ -44,7 +44,7 @@ class Helpers
         <script>
         Toastify({
           text: "' . $data->message . '",
-          duration: 2000,
+          duration: 3000,
           close: true,
           gravity: "top", 
           position: "center", 

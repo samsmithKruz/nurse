@@ -14,8 +14,8 @@ require_once APPROOT . "/views/student/inc/header.php";
           align-items: center;
         ">
     <h2>Test Details</h2>
-    <p>Name: <i>Test on Bladder </i></p>
-    <p>Time: <i>25minutes </i></p>
+    <p>Name: <i>Test on <?=$name;?> </i></p>
+    <p>Time: <i><?=$time;?>minutes </i></p>
     <p style="
             margin-top: 1rem;
             display: flex;
@@ -23,13 +23,13 @@ require_once APPROOT . "/views/student/inc/header.php";
             align-items: center;
             text-align: center;
           ">
-      Score: <i style="font-size: 3rem; line-height: 1">75% </i>
-      <small style="
+      Score: <i style="font-size: 3rem; line-height: 1"><?=$score;?>% </i>
+      <!-- <small style="
               background-color: var(--green);
               color: #fff;
               padding: 0.2rem 0.7rem;
               margin-left: 0.5rem;
-            ">Pass</small>
+            ">Pass</small> -->
     </p>
     <br />
     <div class="btn-group">

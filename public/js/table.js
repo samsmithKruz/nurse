@@ -181,11 +181,56 @@ let tb4 = new DataTable("#general_library", {
         }
     ]
 })
+let tb4_ = new DataTable("#student_general_library", {
+    processing: true,
+    serverSide: true,
+    ajax: {
+        url: baseUrl + '/api/generalLibrary_',
+        type: 'POST',
+        dataFilter: function (data) {
+            // console.log(data);
+            // console.log(JSON.parse(data));
+            // data = JSON.parse(data);
+            //     // data.data = data.data.filter(g => g.balance && g.email && g.name);
+            // return JSON.stringify(data);
+            return data;
+        }
+    },
+    columns: [
+        {
+            "data": "filename",
+            render: function (data, type, row) {
+                return `
+                ${data}
+                `;
+            }
+        },
+        {
+            "data": null,
+            render: function (data, type, row) {
+                let date = new Date(row.date);
+                let day = String(date.getDate()).padStart(2, '0');
+                let month = String(date.getMonth() + 1).padStart(2, '0');
+                let year = date.getFullYear();
+                return `${day}.${month}.${year} `;
+            }
+        },
+        {
+            "data": null,
+            render: function (data, type, row) {
+                console.log(row);
+                return `
+                <a href="${row.type == 'link' ? row.filename : baseUrl + "/uploads/" + row.source}" class="red">View</a>
+                `;
+            }
+        }
+    ]
+})
 let tb5 = new DataTable("#classNotes", {
     processing: true,
     serverSide: true,
     ajax: {
-        url: baseUrl + '/api/classNotes/'+t,
+        url: baseUrl + '/api/classNotes/' + t,
         type: 'POST',
         dataFilter: function (data) {
             // console.log(data);
@@ -215,11 +260,55 @@ let tb5 = new DataTable("#classNotes", {
         }
     ]
 })
+let tb5_ = new DataTable("#classNotes_", {
+    processing: true,
+    serverSide: true,
+    ajax: {
+        url: baseUrl + '/api/classNotes_/' + t,
+        type: 'POST',
+        dataFilter: function (data) {
+            // console.log(data);
+            // data = JSON.parse(data);
+            //     // data.data = data.data.filter(g => g.balance && g.email && g.name);
+            // return JSON.stringify(data);
+            return data;
+        }
+    },
+    columns: [
+        {
+            "data": "filename",
+            render: function (data, type, row) {
+                return `
+                ${data}
+                `;
+            }
+        },
+        {
+            "data": null,
+            render: function (data, type, row) {
+                let date = new Date(row.date);
+                let day = String(date.getDate()).padStart(2, '0');
+                let month = String(date.getMonth() + 1).padStart(2, '0');
+                let year = date.getFullYear();
+                return `${day}.${month}.${year} `;
+            }
+        },
+        {
+            "data": null,
+            render: function (data, type, row) {
+                console.log(row);
+                return `
+                <a download="${row.filename}" href="${baseUrl + "/uploads/" + row.source}"  class="blue">Download</a>
+                `;
+            }
+        }
+    ]
+})
 let tb6 = new DataTable("#timetable", {
     processing: true,
     serverSide: true,
     ajax: {
-        url: baseUrl + '/api/timetable/'+t,
+        url: baseUrl + '/api/timetable/' + t,
         type: 'POST',
         dataFilter: function (data) {
             // console.log(data);
@@ -253,7 +342,7 @@ let tb7 = new DataTable("#test", {
     processing: true,
     serverSide: true,
     ajax: {
-        url: baseUrl + '/api/test/'+t,
+        url: baseUrl + '/api/test/' + t,
         type: 'POST',
         dataFilter: function (data) {
             // console.log(data);
@@ -276,7 +365,7 @@ let tb7 = new DataTable("#test", {
             "data": null,
             render: function (data, type, row) {
                 return `
-                ${row.status == 1? "Running":"Not Running"}
+                ${row.status == 1 ? "Running" : "Not Running"}
                 `;
             }
         },
@@ -380,6 +469,44 @@ let tb9 = new DataTable("#test_scores", {
                 let month = String(date.getMonth() + 1).padStart(2, '0');
                 let year = date.getFullYear();
                 return `${day}.${month}.${year} `;
+            }
+        }
+    ]
+})
+let tb10 = new DataTable("#test_t", {
+    processing: true,
+    serverSide: true,
+    ajax: {
+        url: baseUrl + '/api/student_test/' + t,
+        type: 'POST',
+        dataFilter: function (data) {
+            console.log(data);
+            // data = JSON.parse(data);
+            //     // data.data = data.data.filter(g => g.balance && g.email && g.name);
+            // return JSON.stringify(data);
+            return data;
+        }
+    },
+    columns: [
+        {
+            "data": "name",
+            render: function (data, type, row) {
+                return `${data}`;
+            }
+        },
+        {
+            "data": null,
+            render: function (data, type, row) {
+                return `${row.score || "Not-submitted"}`;
+            }
+        },
+        {
+            "data": null,
+            render: function (data, type, row) {
+                if(row.score==null){
+                    return `<a href="${baseUrl}/student/test?id=${row.id}" class="">start test</a>`
+                }
+                return `Test Taken`;
             }
         }
     ]
