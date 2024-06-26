@@ -33,7 +33,7 @@ require_once APPROOT . "/views/student/inc/header.php";
     </p>
     <br />
     <div class="btn-group">
-      <a href="<?=URLROOT;?>/student/" class="btn primary">Continue</a>
+      <a href="<?=URLROOT;?>/student/" onclick="this.textContent='loading...'" class="btn primary">Continue</a>
     </div>
   </section>
 </main>

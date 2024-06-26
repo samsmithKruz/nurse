@@ -7,6 +7,7 @@ define('DB_HOST','localhost');
 define('DB_USER','root');
 define('DB_PASS','');
 define('DB_NAME','fn');
+define("TOKEN_EXPIRE",60);
 
 define("STUDENT",0);
 define("ADMIN",1);

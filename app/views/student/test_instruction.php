@@ -17,7 +17,7 @@ require_once APPROOT . "/views/student/inc/header.php";
       Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minima, est, quasi explicabo fuga tenetur possimus a dolorum consectetur nulla numquam temporibus omnis voluptatum libero excepturi. Id alias nulla maxime aliquid ipsam aliquam, pariatur similique qui possimus optio, magnam saepe soluta.
     </p>
     <div class="btn-group">
-      <a href="<?=URLROOT;?>/student/start_test?id=<?=$id;?>" class="btn green">Start Test</a>
+      <a href="<?=URLROOT;?>/student/start_test?id=<?=$id;?>" onclick="this.textContent='loading...'" class="btn green">Start Test</a>
     </div>
   </section>
 </main>

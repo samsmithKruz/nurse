@@ -73,7 +73,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
           <textarea required name="file" rows="7" id="notice" placeholder="Make a general notice to all classes"></textarea>
         </div>
         <div class="input">
-          <input type="submit" name="q3" value="Add" />
+          <input type="submit" onclick="this.value='loading...'" name="q3" value="Add" />
         </div>
       </form>
     </div>
@@ -110,7 +110,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
               </select>
             </div>
             <div class="input">
-              <input type="submit" name="q1" value="Add">
+              <input type="submit" onclick="this.value='loading...'" name="q1" value="Add">
             </div>
           </div>
         </form>
@@ -121,7 +121,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
               <input type="text" required name="link" placeholder="https://">
             </div>
             <div class="input">
-              <input type="submit" name="q2" value="Add">
+              <input type="submit" onclick="this.value='loading...'" name="q2" value="Add">
             </div>
           </div>
         </form>

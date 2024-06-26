@@ -45,7 +45,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
             <input type="file" required name="file1" id="file1" placeholder="https://" />
           </div>
           <div class="input">
-            <input type="submit" name="q" value="Upload" />
+            <input type="submit" onclick="this.value='loading...'" name="q" value="Upload" />
           </div>
         </div>
       </form>

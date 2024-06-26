@@ -43,7 +43,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
           </div>
         </div>
         <div class="btn-group">
-        <input type="submit" name="q" style="width: fit-content;" class="btn green" value="Update">
+        <input type="submit" onclick="this.value='loading...'" name="q" style="width: fit-content;" class="btn green" value="Update">
         </div>
       </form>
     </div>
@@ -73,7 +73,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
           </div>
         </div>
         <div class="btn-group">
-          <input type="submit" name="q1" value="Update" class="btn green" style="width: fit-content;">
+          <input type="submit" onclick="this.value='loading...'" name="q1" value="Update" class="btn green" style="width: fit-content;">
         </div>
       </form>
     </div>

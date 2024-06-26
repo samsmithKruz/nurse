@@ -61,7 +61,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
               </select>
             </div>
             <div class="input">
-              <input type="submit" name="q" value="Add">
+              <input type="submit" onclick="this.value='loading...'" name="q" value="Add">
             </div>
           </div>
         </form>
@@ -107,7 +107,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
               </select>
             </div>
             <div class="input">
-              <input type="submit" name="q1" value="Add">
+              <input type="submit" onclick="this.value='loading...'" name="q1" value="Add">
             </div>
           </div>
         </form>
@@ -161,7 +161,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
               </select>
             </div>
             <div class="input">
-              <input type="submit" name="q2" value="Add">
+              <input type="submit" onclick="this.value='loading...'" name="q2" value="Add">
             </div>
           </div>
         </form>

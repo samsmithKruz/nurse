@@ -11,14 +11,14 @@
 <?= isset($_SESSION[APP]->flashMessage)?Helpers::flashMessage($_SESSION[APP]->flashMessage):"";?>
     <div class="container">
         <img src="./assets/doctr.jpg" alt="">
-        <form action="<?=URLROOT;?>/forgot/reset">
+        <form action="<?=URLROOT;?>/forgot/reset" method="post">
             <img src="./assets/logo.svg" alt="">
             <h2>Student Portal</h2>
             <div class="input">
                 <input type="email" name="email" placeholder="Enter your email address">
             </div>
             <div class="input">
-                <input type="submit" value="Reset Password">
+                <input type="submit" onclick="this.value='loading...'" value="Reset Password">
             </div>
             <p><a href="<?= URLROOT; ?>/login">Already Signed Up? </a></p>
             <p><a href="<?= URLROOT; ?>/signup">Create an Account</a></p>

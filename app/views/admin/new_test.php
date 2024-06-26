@@ -25,7 +25,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
       </div>
       <div class="btn-group">
         <a href="#" class="btn primary" onclick="loadView('prev')">Prev</a>
-        <input type="submit" style="width: fit-content;" class="btn green" value="Save & Done">
+        <input type="submit" onclick="this.value='loading...'" style="width: fit-content;" class="btn green" value="Save & Done">
         <a href="#" class="btn primary" onclick="loadView('next')">Next</a>
     </form>
     </div>

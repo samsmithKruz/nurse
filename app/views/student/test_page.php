@@ -63,7 +63,7 @@ require_once APPROOT . "/views/student/inc/header.php";
         <?php } ?>
       </div>
       <div class="btn-group">
-        <input type="submit" style="width: fit-content;" value="Submit" class="btn primary">
+        <input type="submit" onclick="this.value='loading...'" style="width: fit-content;" value="Submit" class="btn primary">
       </div>
     </form>
   </section>
