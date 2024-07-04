@@ -1,0 +1,67 @@
+@import url("./main.css");
+@import url("./header.css");
+@import url("./footer.css");
+@import url("./input.css");
+#contact{
+    padding: 3rem 2rem 5rem;
+    max-width: 900px;
+}
+#contact :is(h1,h2,h3,h4,h5,h6){
+    margin-bottom: .1rem;
+    margin-top: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+#contact h2{
+    font-size: clamp(32px,1.9rem,6vw);
+    line-height: clamp(38px,1.9rem,6vw);
+    text-align: center;
+}
+#contact :is(h1,h2,h3,h4,h5,h6) span{
+    color: var(--red);
+}
+#contact h5{
+    font-weight: 500;
+    font-style: italic;
+}
+#contact p{
+    margin-bottom: 1.9rem;
+}
+#contact > p{
+    max-width: 50ch;
+    margin: auto;
+    line-height: 1;
+    margin-bottom: 3rem;
+}
+.contact-agileinfo{
+    display: grid;
+    /* padding: 0 2rem; */
+    grid-template-columns: 1fr 2fr;
+}
+.contact-agileinfo img{
+    height: 50px;
+    width: auto;
+}
+.contact-agileinfo h3{
+    margin-top: 0 !important;
+}
+.contact-agileinfo > :first-child >div{
+    display: flex;
+    align-items: center;
+    margin-right: 3rem;
+    margin-bottom: .5rem;
+}
+.contact-agileinfo > :first-child >div :is(h5,p){
+    line-height: 1;
+    margin: 0 !important;
+}
+
+
+
+@media (max-width:700px) {
+    .contact-agileinfo {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 4rem;
+    }
+}

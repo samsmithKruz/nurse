@@ -1,0 +1,206 @@
+.wrapper {
+    max-width: 1100px;
+  }
+  header {
+    position: sticky;
+    background-color: #fff;
+    top: 0;
+    z-index: 20;
+    border-bottom: 1px solid #8483882f;
+    padding: .5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  main{
+    padding: 1rem;
+  }
+  .dropdown input {
+    display: none;
+  }
+  header a.logo {
+    font-weight: 400;
+    color: inherit;
+    display: flex;
+    user-select: none;
+    flex-direction: column;
+  }
+  header a.logo img {
+    height: 25px;
+    width: auto;
+    object-fit: contain;
+  }
+  header label {
+    cursor: pointer;
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    font-size: 1rem;
+    color: #5a5c69b4;
+    border: 1px solid #d1d3e2;
+    user-select: none;
+    padding: 0.1rem 0.7rem;
+    border-radius: 12px;
+  }
+  header label img {
+    height: 20px;
+    width: auto;
+  }
+  header .dropdown {
+    position: relative;
+  }
+  header .dropdown .items {
+    position: absolute;
+    right: 0;
+    top: 20px;
+    margin-top: 1rem;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    box-shadow: 0 2px 10px 0 #57575710;
+    padding: 0.7rem 0.5rem;
+    display: none;
+  }
+  header .items a {
+    padding: 0.6rem 1rem;
+    font-weight: 400;
+    display: flex;
+    gap: .5em;
+    align-items: center;
+    color: #848388;
+  }
+  header .items a span {
+    font-size: 1rem;
+  }
+  header .items a:is(:hover, .active) {
+    color: var(--blue);
+  }
+  .dropdown input:checked + .items {
+    display: flex;
+  }
+  .cardio {
+    max-width: 1100px;
+    margin: 2rem auto;
+    border-radius: 22px;
+    padding: 2.5rem 3rem;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 3rem;
+    background: linear-gradient(to right, #4e73df, #212bb5);
+  }
+  .cardio h1 {
+    font-weight: 600;
+    font-size: clamp(1.5rem, 3.5vw, 6vw);
+    line-height: clamp(1.5rem, 3.5vw, 6vw);
+  }
+  .cardio p {
+    opacity: 0.918;
+    max-width: 50ch;
+    line-height: 1.2;
+  }
+  .cardio .side {
+    border-left: 1px solid #fafafa;
+    /* margin-left: 1rem; */
+    padding-left: 3rem;
+  }
+  .container {
+    margin: 3rem auto;
+    /* padding: 2rem; */
+    border: 1px solid #e3e6f0;
+  }
+  .container .head {
+    display: flex;
+    font-size: 1.3rem;
+    user-select: none;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    font-weight: 700;
+    background-color: #f8f9fc;
+    cursor: pointer;
+  }
+  .container .head span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    line-height: 1;
+    padding: 0;
+    transition: all 0.3s ease-in-out;
+  }
+  .container:has(input:checked) .head span {
+    transform: rotate(90deg);
+    transition: transform 0.3s ease-in-out;
+  }
+  .container input[type="checkbox"] {
+    display: none;
+  }
+  .container .content {
+    display: none;
+    border-top: 1px solid #e3e6f0;
+  }
+  .container input:checked + .content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .table{
+    padding: 1rem;
+    /* overflow-x: auto; */
+    width: 100%;
+  }
+  .table table{
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .table thead{
+    background-color: var(--dark2);
+  }
+  /* .table :is(th,td):first-child{
+    width: 500px;
+  } */
+  .table th{
+    font-weight: 400;
+    color: #f8f9fc;
+    padding: .5rem;
+    user-select: none;
+    text-align: center;
+  }
+  table tr:nth-child(even){
+    background-color: #fafafa;
+  }
+  table tr td{
+    padding: 1.2rem .8rem;
+    text-align: center;
+    vertical-align: text-top;
+  }
+  table tr td:first-child{
+    text-align: left;
+    padding-left: 2rem;
+  }
+  table a{
+    font-weight: 400;
+  }
+  .nom{
+    padding: 2rem;
+  }
+  .nom p{
+    margin-bottom: 1rem;
+    font-size: clamp(1rem,1vw,4vw);
+  }
+  
+@media (max-width:750px) {
+    .cardio{
+     flex-direction: column;
+    } 
+    .cardio .side {
+     border-left: unset;
+     padding-left: 0;
+   }
+   header{
+     flex-wrap: wrap;
+   }
+   }

@@ -1,0 +1,11 @@
+.questions{
+    display: flex;
+    overflow-x: hidden; 
+}
+.question{
+    display: none;
+    flex: 1 0 100%;
+}
+.question.active{
+    display: block;
+}
