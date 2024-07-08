@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/google/material-icons.css" />
+    <link rel="stylesheet" href="./css/google/symbols-outlined.css" />
+    <title>Test Maker Update</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <main>
+        <section>
+          <h2 class="test-head" style="font-weight: 600">NCLEX Test <small>5mins</small></h2>
+          
+          <div class="btn-group">
+            <a href="javascript:history.back()" class="btn primary secondary small">Add</a>
+            <a href="javascript:history.back()" class="btn red small">Delete</a>
+          </div>
+          <form action="#" method="">
+            <div class="question">
+              <input type="hidden" name="q_id" value="">
+              <textarea name="q" class="q1" id="q">
+                What is the first letter of an alphabet
+              </textarea>
+              <div class="options">
+                <div class="input">
+                  <label for="" class="correct_">
+                    <input type="checkbox" name="opt1_correct" />
+                    Is correct?
+                  </label>
+                  <input type="text" name="opt1" placeholder="something" />
+                  <div class="reason">
+                    <label for=""> Reason </label>
+                    <input type="text" name="opt1_reason" placeholder="something" />
+                  </div>
+                </div>
+                <div class="input">
+                  <label for="" class="correct_">
+                    <input type="checkbox" name="opt2_correct" />
+                    Is correct?
+                  </label>
+                  <input type="text" name="opt2" placeholder="something" />
+                  <div class="reason">
+                    <label for=""> Reason </label>
+                    <input type="text" name="opt2_reason" placeholder="something" />
+                  </div>
+                </div>
+                <div class="input">
+                  <label for="" class="correct_">
+                    <input type="checkbox" name="opt3_correct" />
+                    Is correct?
+                  </label>
+                  <input type="text" name="opt3" placeholder="something" />
+                  <div class="reason">
+                    <label for=""> Reason </label>
+                    <input type="text" name="opt3_reason" placeholder="something" />
+                  </div>
+                </div>
+                <div class="input">
+                  <label for="" class="correct_">
+                    <input type="checkbox" name="opt4_correct" />
+                    Is correct?
+                  </label>
+                  <input type="text" name="opt4" placeholder="something" />
+                  <div class="reason">
+                    <label for=""> Reason </label>
+                    <input type="text" name="opt4_reason" placeholder="something" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="paginations">
+              <a href="#" class="active">1</a>
+              <a href="#">2</a>
+              <a href="#">3</a>
+              <a href="#">4</a>
+            </div>
+            <div class="btn-group">
+              <input type="submit" value="Save" style="width: fit-content;" class="btn primary green">
+              <a href="javascript:history.back()" class="btn primary ">Done</a>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.js",
+          "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/42.0.0/"
+        }
+      }
+    </script>
+    <script type="module" src="./main.js"></script>
+    <script type="module">
+      ClassicEditor.create(document.querySelector(".question .q1"), editorConfig);
+    </script>
+  </body>
+</html>

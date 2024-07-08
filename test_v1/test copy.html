@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/google/material-icons.css" />
+    <link rel="stylesheet" href="./css/google/symbols-outlined.css" />
+    <title>Test Maker Update</title>
+    <link rel="stylesheet" href="./css/__.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./css/_.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <main>
+        <section>
+          <h2 class="test-head" style="font-weight: 600">Test Maker</h2>
+          <div class="input-group">
+            <div class="input">
+              <label for="">Name</label>
+              <input
+                type="text"
+                name="question_name"
+                placeholder="Enter Test name"
+              />
+            </div>
+            <div class="input">
+              <label for="">Time (min)</label>
+              <input
+                type="number"
+                step="0.01"
+                name="question_time"
+                placeholder="Allocated Time"
+              />
+            </div>
+          </div>
+
+          <div class="questions">
+            <div class="question" tabindex="1">
+              <p class="q1 q">
+                What is the first letter of an alphabet
+              </p>
+              <div class="options">
+                <div class="input">
+                  <input type="checkbox" id="q0_opt1" name="12" value="a" />
+                  <label for="q0_opt1">
+                    <div class="material-symbols-outlined">circle</div>
+                    a
+                  </label>
+                </div>
+                <div class="input">
+                  <input type="checkbox" id="q0_opt2" name="12" value="d" />
+                  <label for="q0_opt2">
+                    <div class="material-symbols-outlined">circle</div>
+                    d
+                  </label>
+                </div>
+                <div class="input">
+                  <input type="checkbox" id="q0_opt3" name="12" value="f" />
+                  <label for="q0_opt3">
+                    <div class="material-symbols-outlined">circle</div>
+                    f
+                  </label>
+                </div>
+                <div class="input">
+                  <input type="checkbox" id="q0_opt4" name="12" value="c" />
+                  <label for="q0_opt4">
+                    <div class="material-symbols-outlined">circle</div>
+                    c
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-group">
+            <a href="javascript:history.back()" class="btn primary">Continue</a>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.js",
+          "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/42.0.0/"
+        }
+      }
+    </script>
+    <script type="module" src="../main.js"></script>
+    <script type="module">
+      ClassicEditor.create(document.querySelector(".q1"), editorConfig);
+    </script>
+  </body>
+</html>
