@@ -134,7 +134,12 @@ body {
   user-select: none;
   align-items: center;
   gap: 0.4rem;
+  line-height: 1.5;
   font-weight: 600;
+}
+.btn.small{
+  font-size: .8rem;
+  padding: 0.3rem 1rem;
 }
 .btn svg {
   height: 3rem;
@@ -162,6 +167,14 @@ body {
 }
 .btn.green:hover {
   background-color: #80EDA1;
+  color: #fff;
+}
+.btn.secondary {
+  background-color: #5c5c5c;
+  color: #fff;
+}
+.btn.secondary:hover {
+  background-color: #a1a1a1;
   color: #fff;
 }
 h5._ {

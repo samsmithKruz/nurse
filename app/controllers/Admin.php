@@ -6,7 +6,7 @@ class Admin extends Controller
     private $modelStudent;
     public function __construct()
     {
-        if(!($_SESSION[APP]->is_admin == ADMIN || $_SESSION[APP]->is_admin == STAFF)){
+        if (!($_SESSION[APP]->is_admin == ADMIN || $_SESSION[APP]->is_admin == STAFF)) {
             Auth::redirect("logout/");
         }
         $this->model = $this->model("admin_");
@@ -132,25 +132,91 @@ class Admin extends Controller
     public function new_test()
     {
         if (Auth::getMethod() == 'POST') {
-            $_SESSION[APP]->flashMessage =  $this->model->new_test($_POST, $this->model->sanitize_questions($_POST));
+            $response =  $this->model->new_test_name($_POST, $this->model->sanitize_questions($_POST));
+            if ($response->state == 0) {
+                $_SESSION[APP]->flashMessage = Helpers::response(array(
+                    'state' => 0,
+                    'message' => $response->message,
+                ));
+            } else {
+            }
+            exit();
+            // $_SESSION[APP]->flashMessage =  $this->model->new_test($_POST, $this->model->sanitize_questions($_POST));
         }
         $this->view("admin/new_test");
     }
+    public function test_name()
+    {
+        $data = [];
+        if (Auth::getMethod() == 'POST') {
+            $response =  $this->model->new_test_name($_POST, $this->model->sanitize_questions($_POST));
+            $_SESSION[APP]->flashMessage = Helpers::response(array(
+                'state' => $response->state,
+                'message' => $response->message,
+            ));
+            if($response->state == 0){
+                Auth::redirect("admin/test_name?id=" . $response->id);
+            }
+            Auth::redirect("admin/add_question?id=" . $response->id);
+        }
+        if (isset($_GET['id']) && !empty(Auth::safe_data($_GET['id']))) {
+            $id =  $this->model->get_test_name(Auth::safe_data($_GET['id']));
+            if (!$id) {
+                $_SESSION[APP]->flashMessage = Helpers::response(array(
+                    'state' => 0,
+                    'message' => "Test not found",
+                ));
+                Auth::redirect("admin/test_maker");
+            }
+            $data['test_name'] = $id->name;
+            $data['test_time'] = $id->time;
+            $data['test_id'] = $id->id;
+        }
+        $this->view("admin/new_test", $data);
+    }
+    public function add_question()
+    {
+        if (!isset($_GET['id']) || empty(Auth::safe_data($_GET['id']))) {
+            $_SESSION[APP]->flashMessage = Helpers::response(array(
+                'state' => 0,
+                'message' => "Unkown test details.",
+            ));
+            Auth::redirect("admin/test_maker");
+        }
+        if(Auth::getMethod() == 'POST'){
+            print_r($_POST);exit();
+        }
+
+        $id =  $this->model->get_test_name(Auth::safe_data($_GET['id']));
+        if (!$id) {
+            $_SESSION[APP]->flashMessage = Helpers::response(array(
+                'state' => 0,
+                'message' => "Test not found",
+            ));
+            Auth::redirect("admin/test_maker");
+        }
+        $data = [];
+        $data['test_name'] = $id->name;
+        $data['test_time'] = $id->time;
+
+
+        $this->view('admin/questions',$data);
+    }
     public function profile()
     {
-        if(Auth::getMethod() == 'POST'){
-            if(isset($_POST['q'])){
+        if (Auth::getMethod() == 'POST') {
+            if (isset($_POST['q'])) {
                 $res = $this->modelStudent->updateProfile($_POST);
                 $_SESSION[APP]->flashMessage = $res;
             }
-            if(isset($_POST['q1'])){
+            if (isset($_POST['q1'])) {
                 $res = $this->modelStudent->updatePassword($_POST);
                 $_SESSION[APP]->flashMessage = $res;
             }
         }
         $data = $this->model->getUser($_SESSION[APP]->email);
 
-        $this->view("admin/profile_settings",$data);
+        $this->view("admin/profile_settings", $data);
     }
 
 
@@ -221,15 +287,15 @@ class Admin extends Controller
         if (!isset($_GET['id'])) {
             Auth::redirect("admin/");
         }
-        if(Auth::getMethod() == 'POST'){
+        if (Auth::getMethod() == 'POST') {
             $res = Helpers::response(array(
                 'state' => 0,
                 'message' => "Error: Unknown operation.",
             ));
-            if(isset($_POST['q2'])){
+            if (isset($_POST['q2'])) {
                 $res = $this->model->unregisterUser($_POST);
             }
-            if(isset($_POST['q1'])){
+            if (isset($_POST['q1'])) {
                 $res = $this->model->updateUser($_POST);
             }
             $_SESSION[APP]->flashMessage = $res;

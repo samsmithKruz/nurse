@@ -98,7 +98,7 @@ class Api extends Controller
         echo json_encode(array('recordsTotal' => $this->mainModel->getTotalStudents(), 'recordsFiltered' => count($data), "data" => $data));
         exit();
     }
-    public function getAllUsersByClass($params)
+    public function getAllUsersByClass()
     {
         $class = Auth::safe_data($_GET['class']);
         $start = $_POST['start'];
@@ -396,22 +396,22 @@ class Api extends Controller
 
         $sql = "
         SELECT 
-            test.*,
-            count(test_questions.question_id) as questions
-        FROM test
-        LEFT JOIN test_questions on
-            test_questions.test_id = test.id
+            new_test.*,
+            count(new_test_questions.question_id) as questions
+        FROM new_test
+        LEFT JOIN new_test_questions on
+            new_test_questions.test_id = new_test.id
         WHERE (1=1) ";
         if (!empty($searchValue)) {
-            $sql .= " AND (test.name like '%$searchValue%') ";
+            $sql .= " AND (new_test.name like '%$searchValue%') ";
         }
-        $sql .= " GROUP BY test.id ";
+        $sql .= " GROUP BY new_test.id ";
         if ($orderColumnName != "") {
-            $sql .= " order by test.name $orderDirection";
+            $sql .= " order by new_test.name $orderDirection";
         }
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
-        $total = $this->mainModel->getData("select count(id) as total from test ")[0]->total;
+        $total = $this->mainModel->getData("select count(id) as total from new_test ")[0]->total;
 
 
         echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => count($data), "data" => $data));

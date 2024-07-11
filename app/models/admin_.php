@@ -279,6 +279,67 @@ class admin_ extends Database
         }
         return $questions;
     }
+    public function new_test_name($post)
+    {
+        $question_id = Auth::safe_data(@$post['test_id']) ?? "";
+        $question_name = Auth::safe_data($post['question_name']);
+        $question_time = Auth::safe_data($post['question_time']);
+
+        if (strlen($question_name) == 0 || strlen($question_time) == 0) {
+            return Helpers::response(array(
+                'state' => 0,
+                'message' => "Test name and time is invalid.",
+            ));
+        }
+        if (strlen($question_id) == 0) {
+            $this->db->query("select name from new_test where name=:name");
+            $this->db->bind(":name", $question_name);
+            $this->db->execute();
+            if ($this->db->rowCount() > 0) {
+                return Helpers::response(array(
+                    'state' => 0,
+                    'message' => "Test with same name already exists.",
+                ));
+            }
+            while (true) {
+                $question_id = bin2hex(random_bytes(4));
+                $this->db->query("select id from test where id=:id");
+                $this->db->bind(":id", $question_id);
+                $this->db->execute();
+                if ($this->db->rowCount() == 0) {
+                    break;
+                }
+            }
+            $this->db->query("insert into new_test(id,name,time) values(:id,:name,:time)");
+            $this->db->bind(":id", $question_id);
+            $this->db->bind(":name", $question_name);
+            $this->db->bind(":time", $question_time);
+            $this->db->execute();
+            if ($this->db->rowCount() > 0) {
+                return (object)['state' => 1, 'message'=>"Test created successfully", 'id' => $question_id];
+            }
+            return (object)['state' => 0, 'message' => 'Unable to create test'];
+        } else {
+            $this->db->query("update new_test set name=:name,time=:time where id=:id");
+            $this->db->bind(":name", $question_name);
+            $this->db->bind(":time", $question_time);
+            $this->db->bind(":id", $question_id);
+            $this->db->execute();
+            if ($this->db->rowCount() > 0) {
+                return Helpers::response(array(
+                    'state' => 1,
+                    'id' => $question_id,
+                    'message' => "Test updated successfully.",
+                ));
+            }
+            return (object)['state' => 1, 'id' => $question_id, 'message' => 'Welcome'];
+        }
+    }
+    public function get_test_name($id)
+    {
+        $this->db->query("select * from new_test");
+        return $this->db->single();
+    }
     public function getTests()
     {
         $this->db->query("select * from test");

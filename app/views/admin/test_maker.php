@@ -40,7 +40,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
           </table>
         </div>
         <div class="btn-group">
-          <a href="<?=URLROOT;?>/admin/new_test" class="btn primary">New test</a>
+          <a href="<?=URLROOT;?>/admin/test_name" class="btn primary">New test</a>
         </div>
       </div>
 

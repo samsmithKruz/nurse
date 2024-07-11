@@ -36,9 +36,9 @@
   <script src="<?= URLROOT; ?>/js/jquery-3.7.1.min.js"></script>
   <script src="<?= URLROOT; ?>/js/dataTables.js"></script>
   <link rel="stylesheet" href="<?= URLROOT; ?>/css/dataTables.css" />
-  <?= $styles; ?>
   <link rel="stylesheet" href="<?= URLROOT; ?>/css/google/material-icons.css" />
   <link rel="stylesheet" href="<?= URLROOT; ?>/css/google/symbols-outlined.css" />
+  <?= $styles; ?>
 </head>
 
 <body>

@@ -453,7 +453,7 @@ let tb8 = new DataTable("#test_maker", {
         url: baseUrl + '/api/uploadedTests/',
         type: 'POST',
         dataFilter: function (data) {
-            console.log(data);
+            // console.log(data);
             // data = JSON.parse(data);
             //     // data.data = data.data.filter(g => g.balance && g.email && g.name);
             // return JSON.stringify(data);
@@ -485,6 +485,7 @@ let tb8 = new DataTable("#test_maker", {
                 return `
                 <div class="btns">
                     <a href="${baseUrl}/admin/test_view_?id=${row.id}" class="blue">View</a>
+                    <a href="${baseUrl}/admin/test_name?id=${row.id}" class="">Edit</a>
                     <a href="${baseUrl}/admin/test_delete?id=${row.id}" class="red">Delete</a>
                   </div>`;
             }
