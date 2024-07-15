@@ -512,6 +512,9 @@ class Api extends Controller
         LEFT JOIN users on
             test_score.user_id = users.email
         WHERE (1=1)  ";
+        if (!empty(Auth::safe_data($_GET['class']))) {
+            $sql .= " AND (users.current_class = '$searchValue') ";
+        }
         if (!empty($searchValue)) {
             $sql .= " AND (users.fullname like '%$searchValue%') ";
         }

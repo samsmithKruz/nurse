@@ -154,7 +154,7 @@ class Admin extends Controller
                 'state' => $response->state,
                 'message' => $response->message,
             ));
-            if($response->state == 0){
+            if ($response->state == 0) {
                 Auth::redirect("admin/test_name?id=" . $response->id);
             }
             Auth::redirect("admin/add_question?id=" . $response->id);
@@ -183,11 +183,17 @@ class Admin extends Controller
             ));
             Auth::redirect("admin/test_maker");
         }
-        if(Auth::getMethod() == 'POST'){
-            print_r($_POST);exit();
+        $data = [];
+        if (Auth::getMethod() == 'POST') {
+            $_SESSION[APP]->flashMessage = $this->model->new_add_question();
+            if ($_SESSION[APP]->flashMessage->state == 1) {
+                Auth::redirect("admin/add_question?id=" . $_GET['id'] . "&q_id=" . Auth::safe_data($_SESSION[APP]->flashMessage->question_id));
+            }
         }
 
         $id =  $this->model->get_test_name(Auth::safe_data($_GET['id']));
+        $question_ids =  $this->model->get_question_ids(Auth::safe_data($_GET['id']));
+        // print_r($question_ids);exit();
         if (!$id) {
             $_SESSION[APP]->flashMessage = Helpers::response(array(
                 'state' => 0,
@@ -195,12 +201,38 @@ class Admin extends Controller
             ));
             Auth::redirect("admin/test_maker");
         }
-        $data = [];
+
+
         $data['test_name'] = $id->name;
         $data['test_time'] = $id->time;
+        $data['question_ids'] = $question_ids;
 
+        if (isset($_GET['q_id']) && !empty(@$_GET['q_id'])) {
+            $question =  $this->model->get_test_question(Auth::safe_data($_GET['q_id']));
+            if (!$question) {
+                $_SESSION[APP]->flashMessage = Helpers::response(array(
+                    'state' => 0,
+                    'message' => "Test not found",
+                ));
+                Auth::redirect("admin/test_maker");
+            }
+            $data['question_text'] = $question[0]->question;
+            $data['options'] = $question;
+        }
+        $this->view('admin/questions', $data);
+    }
+    public function delete_question()
+    {
+        if (!isset($_GET['id']) || empty(Auth::safe_data($_GET['id'])) || !isset($_GET['q_id']) || empty(Auth::safe_data($_GET['q_id']))) {
+            $_SESSION[APP]->flashMessage = Helpers::response(array(
+                'state' => 0,
+                'message' => "Unkown question.",
+            ));
+            Auth::redirect("admin/test_maker");
+        }
 
-        $this->view('admin/questions',$data);
+        $_SESSION[APP]->flashMessage = $this->model->new_delete_question();
+        Auth::redirect("admin/add_question?id=" . $_GET['id']);
     }
     public function profile()
     {
@@ -310,19 +342,7 @@ class Admin extends Controller
         if (!isset($_GET['class'])) {
             Auth::redirect("admin/");
         }
-        $data = array();
-        switch (Auth::safe_data($_GET['class'])) {
-            case "a":
-                $data['type'] = "a";
-                break;
-            case "b":
-                $data['type'] = "b";
-                break;
-            default:
-                $data['type'] = "c";
-                break;
-        }
-        $this->view("admin/test_view", $data);
+        $this->view("admin/test_view");
     }
     public function test_view_()
     {

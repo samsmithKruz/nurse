@@ -25,17 +25,6 @@ require_once APPROOT . "/views/admin/inc/header.php";
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus, vel laudantium! Ullam.</td>
-                <td>15</td>
-                <td>30mins</td>
-                <td>
-                  <div class="btns">
-                    <a href="#" class="blue">Edit</a>
-                    <a href="#" class="red">Delete</a>
-                  </div>
-                </td>
-              </tr>
             </tbody>
           </table>
         </div>

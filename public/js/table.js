@@ -484,7 +484,6 @@ let tb8 = new DataTable("#test_maker", {
             render: function (data, type, row) {
                 return `
                 <div class="btns">
-                    <a href="${baseUrl}/admin/test_view_?id=${row.id}" class="blue">View</a>
                     <a href="${baseUrl}/admin/test_name?id=${row.id}" class="">Edit</a>
                     <a href="${baseUrl}/admin/test_delete?id=${row.id}" class="red">Delete</a>
                   </div>`;
@@ -496,7 +495,7 @@ let tb9 = new DataTable("#test_scores", {
     processing: true,
     serverSide: true,
     ajax: {
-        url: baseUrl + '/api/test_scores/',
+        url: baseUrl + '/api/test_scores?class=' + t,
         type: 'POST',
         dataFilter: function (data) {
             // console.log(data);

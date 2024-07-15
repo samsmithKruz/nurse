@@ -7,6 +7,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
 ?>
 <main>
   <section class="container wrapper">
+    <input type="hidden" name="t" value="<?=Auth::safe_data($_GET['class']);?>">
     <label for="content4" class="head">
       Results
       <span class="material-symbols-outlined"> arrow_right </span>

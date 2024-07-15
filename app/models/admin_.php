@@ -316,7 +316,7 @@ class admin_ extends Database
             $this->db->bind(":time", $question_time);
             $this->db->execute();
             if ($this->db->rowCount() > 0) {
-                return (object)['state' => 1, 'message'=>"Test created successfully", 'id' => $question_id];
+                return (object)['state' => 1, 'message' => "Test created successfully", 'id' => $question_id];
             }
             return (object)['state' => 0, 'message' => 'Unable to create test'];
         } else {
@@ -362,27 +362,43 @@ class admin_ extends Database
     }
     public function delete_test($id)
     {
-        $this->db->query("delete from test_questions where test_id=:id");
+        $this->db->query("delete from new_test where id=:id");
         $this->db->bind(":id", $id);
         $this->db->execute();
+
         if ($this->db->rowCount() == 0) {
             return Helpers::response(array(
                 'state' => 0,
-                'message' => "Database Error: Unable to delete test.",
+                'message' => "Unable to delete test.",
             ));
         }
-        $this->db->query("delete from test where id=:id");
+
+
+        $this->db->query("
+        select 
+            new_question_options.question_id
+        from new_question_options
+        join new_test_questions on 
+            new_test_questions.question_id = new_question_options.question_id
+        where
+            new_test_questions.test_id =:id
+        ;
+        ");
         $this->db->bind(":id", $id);
-        $this->db->execute();
-        if ($this->db->rowCount() == 0) {
-            return Helpers::response(array(
-                'state' => 0,
-                'message' => "Database Error: Unable to delete test.",
-            ));
+        $questions = $this->db->resultSet();
+
+        foreach($questions as $key=>$question){
+            $this->db->query("
+            delete from new_question_options where question_id=:id;
+            delete from new_test_questions where question_id=:id;
+            ");
+            $this->db->bind(":id", $question->question_id);
+            $this->db->execute();
+            $this->deleteRationale($question->question_id);
         }
         return Helpers::response(array(
             'state' => 1,
-            'message' => "Test deleted successfullly.",
+            'message' => "Test deleted successfully",
         ));
     }
     public function start_test($id)
@@ -648,6 +664,218 @@ class admin_ extends Database
             'message' => "File not found in database.",
         ));
     }
+
+
+
+    private function uploadRationale($file, $index = 0, $question_id)
+    {
+        $this->db->query("delete from new_rationale where path like '" . $question_id . "_%'");
+        $this->db->execute();
+
+        // Allowed file extensions
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'txt', 'mp3', 'xlsx', 'wav', 'ogg', 'mp4', 'mkv', '3gp', 'avi', 'wmv', 'flv', 'webm', 'm4v', 'ogg'];
+
+        if (strlen($file['full_path'][$index]) > 0) {
+            $old_uploads = glob(UPLOAD_RATIONALE_PATH . $question_id . "_*");
+            foreach ($old_uploads as $file_) {
+                if (file_exists($file_)) {
+                    unlink($file_);
+                }
+            }
+            // Step 2: Handle the file upload
+            $fileTmpPath = $file['tmp_name'][$index];
+            $fileOriginalName = $file['name'][$index];
+            $fileExtension = strtolower(pathinfo($fileOriginalName, PATHINFO_EXTENSION));
+
+            // Check if the file extension is allowed
+            if (!in_array($fileExtension, $allowedExtensions)) {
+                return Helpers::response(array(
+                    'state' => 0,
+                    'message' => "Error: File type not allowed.",
+                ));
+            }
+
+            $newFileName = $question_id . "_$index" . "_" . bin2hex(random_bytes(2)) . '.' . $fileExtension;
+            $dest_path = UPLOAD_RATIONALE_PATH . $newFileName;
+
+            if (!is_dir(UPLOAD_RATIONALE_PATH)) {
+                mkdir(UPLOAD_RATIONALE_PATH, 0777, true);
+            }
+
+
+            // Check file size
+            if ($file["size"][$index] > UPLOAD_FILE_SIZE * 1024 * 1024) {
+                return Helpers::response(array(
+                    'state' => 0,
+                    'message' => "Sorry, your file is too large.",
+                ));
+            }
+
+            // Move the file to the upload directory
+            if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                // Step 3: Insert data into the database
+                $this->db->query("insert into new_rationale(question_id,path) values(:question_id,:path)");
+                $this->db->bind(":question_id", $question_id);
+                $this->db->bind(":path", $newFileName);
+                $this->db->execute();
+
+                if ($this->db->rowCount() == 0) {
+                    return Helpers::response(array(
+                        'state' => 0,
+                        'message' => "Rationale not added to database",
+                    ));
+                }
+            } else {
+                return Helpers::response(array(
+                    'state' => 0,
+                    'message' => "There was an error uploading rationale.",
+                ));
+            }
+        } else {
+            return Helpers::response(array(
+                'state' => 0,
+                'message' => "Rationale is undefined.",
+            ));
+        }
+    }
+    private function deleteRationale($question_id)
+    {
+        $this->db->query("delete from new_rationale where path like '" . $question_id . "_%'");
+        $this->db->execute();
+        $old_uploads = glob(UPLOAD_RATIONALE_PATH . $question_id . "_*");
+        foreach ($old_uploads as $file_) {
+            if (file_exists($file_)) {
+                unlink($file_);
+            }
+        }
+    }
+
+    public function new_add_question()
+    {
+        $test_id = Auth::safe_data($_GET['id']);
+        $quest = Auth::safe_data($_POST['quest_']);
+        $options = [];
+        for ($i = 1; $i <= 4; $i++) {
+            $options[] = [
+                'text' => $_POST["opt{$i}"],
+                'is_correct' => isset($_POST["opt{$i}_correct"]) ? 1 : 0,
+                'rationale' => $_POST["opt{$i}_reason"]
+            ];
+        }
+
+        if (empty($_POST['q_id'])) {
+
+            // Add new question
+            while (true) {
+                $question_id = bin2hex(random_bytes(8));
+                $this->db->query("select question_id from new_test_questions where question_id=:id");
+                $this->db->bind(":id", $question_id);
+                $this->db->execute();
+                if ($this->db->rowCount() == 0) {
+                    break;
+                }
+            }
+            $sql = "INSERT INTO new_test_questions (question_id,test_id,question) VALUES (:question_id,:test_id,:question)";
+            $sqlOptions = "INSERT INTO new_question_options (question_id, option_text, is_correct, rationale) VALUES (:question_id, :option_text, :is_correct, :reason)";
+        } else {
+            // Update question
+            $question_id = Auth::safe_data($_POST['q_id']);
+            $sql = "UPDATE new_test_questions SET 
+            test_id=:test_id,
+            question=:question
+            WHERE question_id=:question_id
+            ";
+
+            // Insert/Update question
+            $this->db->query("DELETE from new_question_options where question_id=:question_id;");
+            $this->db->bind(':question_id', $question_id);
+            $this->db->execute();
+
+            $sqlOptions = " 
+            INSERT INTO 
+            new_question_options (question_id, option_text, is_correct, rationale) 
+            VALUES (:question_id, :option_text, :is_correct, :reason)";
+        }
+
+        // Insert/Update question
+        $this->db->query($sql);
+        $this->db->bind(':question_id', $question_id);
+        $this->db->bind(':test_id', $test_id);
+        $this->db->bind(':question', $quest);
+        $this->db->execute();
+
+        // Insert/Update question options
+        foreach ($options as $option) {
+            $this->db->query($sqlOptions);
+            $this->db->bind(':question_id', $question_id);
+            $this->db->bind(':option_text', $option['text']);
+            $this->db->bind(':is_correct', $option['is_correct']);
+            $this->db->bind(':reason', $option['rationale']);
+            $this->db->execute();
+        }
+        // Upload rationale
+        if (isset($_FILES['images']) && count($_FILES['images']['name']) > 0) {
+            $i = count($_FILES['images']['name']);
+            while ($i > 0) {
+                $this->uploadRationale($_FILES['images'], $i - 1, $question_id);
+                $i--;
+            }
+        }
+
+        return (object)['state' => 1, 'message' => 'Question added sucessfully', 'question_id' => $question_id];
+    }
+    public function new_delete_question()
+    {
+        $test_id = Auth::safe_data($_GET['id']);
+        $question_id = Auth::safe_data($_GET['q_id']);
+
+        // Insert/Update question
+        $this->db->query("DELETE FROM new_test_questions WHERE question_id=:question_id AND test_id=:test_id;
+            DELETE FROM new_question_options WHERE question_id=:question_id
+            ");
+        $this->db->bind(':question_id', $question_id);
+        $this->db->bind(':test_id', $test_id);
+        $this->db->execute();
+
+        if ($this->db->rowCount() > 0) {
+            $this->deleteRationale($question_id);
+            return (object)['state' => 1, 'message' => "Question deleted successfully."];
+        }
+        return (object)['state' => 0, 'message' => 'Unable to delete question.'];
+    }
+
+    public function get_test_question($question_id)
+    {
+        $this->db->query("
+        SELECT 
+            new_test_questions.question,
+            new_question_options.option_text,
+            new_question_options.is_correct,
+            new_question_options.rationale
+        FROM new_test_questions
+        JOIN new_question_options ON
+            new_question_options.question_id = new_test_questions.question_id
+        WHERE 
+            new_question_options.question_id=:question_id
+        ");
+        $this->db->bind(":question_id", $question_id);
+        return $this->db->resultSet();
+    }
+
+    public function get_question_ids($test_id)
+    {
+        $this->db->query("
+        SELECT *
+        FROM new_test_questions
+        WHERE 
+            test_id=:test_id order by date asc
+        ");
+        $this->db->bind(":test_id", $test_id);
+        return $this->db->resultSet();
+    }
+
+
+
     function markTest($post)
     {
         $id = Auth::safe_data($post['id']);

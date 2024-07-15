@@ -15,6 +15,7 @@ define("ADMIN",2);
 
 define("UPLOAD_FILE_SIZE",200);
 define("UPLOAD_FILE_PATH",'uploads/');
+define("UPLOAD_RATIONALE_PATH",'test_rationale/');
 
 define('EMAIL', 'admin@foreignnurseglobal.com');
 // define('EMAIL', 'dev.sambenny@gmail.com');
