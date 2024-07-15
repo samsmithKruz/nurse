@@ -20,12 +20,12 @@ class Student extends Controller
     }
     public function profile()
     {
-        if(Auth::getMethod() == 'POST'){
-            if(isset($_POST['q'])){
+        if (Auth::getMethod() == 'POST') {
+            if (isset($_POST['q'])) {
                 $res = $this->model->updateProfile($_POST);
                 $_SESSION[APP]->flashMessage = $res;
             }
-            if(isset($_POST['q1'])){
+            if (isset($_POST['q1'])) {
                 $res = $this->model->updatePassword($_POST);
                 $_SESSION[APP]->flashMessage = $res;
             }
@@ -42,13 +42,31 @@ class Student extends Controller
             ));
             Helpers::back('admin');
         }
-        $res = $this->modelAdmin->markTest($_POST);
-        if ($res->state == 0) {
-            $_SESSION[APP]->flashMessage = $res;
+        $test_id = $_POST['id'];
+        unset($_POST['id']);
+        $questions = $_POST;
+        $_SESSION[APP]->flashMessage = $this->modelAdmin->submitTest($test_id, $questions);
+        if ($_SESSION[APP]->flashMessage->state == 0) {
             Auth::redirect("student");
         }
-        $data = $this->modelAdmin->getTestScore(Auth::safe_data($_POST['id']));
+        Auth::redirect("student/test_score?id=".$test_id);
+    }
+    public function test_score(){
+        if (!isset($_GET['id'])) {
+            Auth::redirect("student/");
+        }
+        $data = [];
+        $score = $this->modelAdmin->getTestScore(Auth::safe_data($_GET['id']));
+        if(!$score){
+            $_SESSION[APP]->flashMessage = (object)[
+                'state'=>0,
+                'message'=> 'Test score was not found.'
+            ];
+            Auth::redirect("student/");
+        }
+        $data['score'] = $score;
         $this->view("student/test_score", $data);
+
     }
     public function class()
     {
@@ -84,10 +102,10 @@ class Student extends Controller
         if (!isset($_GET['id'])) {
             Helpers::back("student");
         }
-        if($this->model->testTaken(Auth::safe_data($_GET['id']))){
+        if ($this->model->testTaken(Auth::safe_data($_GET['id']))) {
             $_SESSION[APP]->flashMessage = Helpers::response(array(
-                'state'=>0,
-                'message'=>'You have already submitted this test.'
+                'state' => 0,
+                'message' => 'You have already submitted this test.'
             ));
             Helpers::back("student");
         }
@@ -103,19 +121,21 @@ class Student extends Controller
                 'state' => 0,
                 'message' => "Test not found.",
             ));
-            Helpers::back('admin');
+            Helpers::back('student');
         }
         $data['tests'] = $test;
         $this->view("student/test_page", $data);
     }
-    // public function watch_test(){
-    //     if (!isset($_GET['id'])) {
-    //         Auth::redirect("student/");
-    //     }
-    //     $data = array();
-    //     $data['id'] = Auth::safe_data($_GET['id']);
-    //     $data['timer'] = 0.25;
-    //     print_r("View answered questions");
-    //     $this->view("student/test_page",$data);
-    // }
+    public function watch_test()
+    {
+        if (!isset($_GET['id'])) {
+            Auth::redirect("student/");
+        }
+        $data = array();
+        $data['id'] = Auth::safe_data($_GET['id']);
+        $data['timer'] = 0.25;
+        print_r("View answered questions");
+        exit();
+        // $this->view("student/test_page",$data);
+    }
 }

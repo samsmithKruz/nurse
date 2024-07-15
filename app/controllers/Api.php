@@ -430,17 +430,17 @@ class Api extends Controller
         $sql = "
         SELECT 
             add_test.*,
-            test.name
+            new_test.name
         FROM add_test
-        LEFT JOIN test on
-            test.id = add_test.test_id
+        LEFT JOIN new_test on
+            new_test.id = add_test.test_id
         WHERE (1=1) $_ ";
         if (!empty($searchValue)) {
-            $sql .= " AND (test.name like '%$searchValue%') ";
+            $sql .= " AND (new_test.name like '%$searchValue%') ";
         }
         // $sql .= " GROUP BY add_test.id ";
         if ($orderColumnName != "") {
-            $sql .= " order by test.name $orderDirection";
+            $sql .= " order by new_test.name $orderDirection";
         }
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
@@ -472,7 +472,7 @@ class Api extends Controller
             add_test at ON 
             u.current_class = at.class
         JOIN
-            test t ON
+            new_test t ON
             at.test_id = t.id
         LEFT JOIN
             test_score ts ON 

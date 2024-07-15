@@ -48,7 +48,7 @@ main{
     padding-left: 1rem ;
 }
 .question .q{
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     padding: .5rem 1rem 0;
 }
 input{
@@ -76,4 +76,20 @@ input.fail + label {
 }
 .paginations{
     margin-top: 2rem;
+}
+.rationales{
+    padding: 0 1rem 1rem;
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 2rem;
+}
+.rationales.active{
+    display: flex;
+}
+.rationales img{
+    width: 100%;
+}
+.rationale-toggle{
+    margin: 0 1rem 1rem;
 }

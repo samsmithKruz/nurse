@@ -13,9 +13,6 @@ require_once APPROOT . "/views/student/inc/header.php";
           flex-direction: column;
           align-items: center;
         ">
-    <h2>Test Details</h2>
-    <p>Name: <i>Test on <?=$name;?> </i></p>
-    <p>Time: <i><?=$time;?>minutes </i></p>
     <p style="
             margin-top: 1rem;
             display: flex;
@@ -23,7 +20,7 @@ require_once APPROOT . "/views/student/inc/header.php";
             align-items: center;
             text-align: center;
           ">
-      Score: <i style="font-size: 3rem; line-height: 1"><?=$score;?>% </i>
+      Score: <i style="font-size: 3rem; line-height: 1"><?= $score; ?>% </i>
       <!-- <small style="
               background-color: var(--green);
               color: #fff;
@@ -33,7 +30,8 @@ require_once APPROOT . "/views/student/inc/header.php";
     </p>
     <br />
     <div class="btn-group">
-      <a href="<?=URLROOT;?>/student/" onclick="this.textContent='loading...'" class="btn primary">Continue</a>
+      <a href="<?= URLROOT; ?>/student/watch_test?id=<?= Auth::safe_data($_GET['id']); ?>" onclick="this.textContent='loading...'" class="btn green small ">View Test</a>
+      <a href="<?= URLROOT; ?>/student/" onclick="this.textContent='loading...'" class="btn primary small">Continue</a>
     </div>
   </section>
 </main>

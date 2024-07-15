@@ -28,13 +28,6 @@ require_once APPROOT . "/views/student/inc/header.php";
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>NCLEX TEST 1</td>
-                            <td>Not-Submitted</td>
-                            <td>
-                                <a href="<?= URLROOT; ?>/student/test?id=8234">Start Test</a>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>

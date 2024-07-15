@@ -563,7 +563,7 @@ let tb10 = new DataTable("#test_t", {
                 if (row.score == null) {
                     return `<a href="${baseUrl}/student/test?id=${row.id}" class="">start test</a>`
                 }
-                return `Test Taken`;
+                return `<a href="${baseUrl}/student/watch_test?id=${row.id}" class="">View test</a>`
             }
         }
     ]

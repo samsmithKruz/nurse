@@ -48,7 +48,7 @@ class student_ extends Database
     }
     public function getTestDetails($id)
     {
-        $this->db->query("SELECT * FROM test where id=:id");
+        $this->db->query("SELECT * FROM new_test where id=:id");
         $this->db->bind(":id", $id);
         return $this->db->single();
     }

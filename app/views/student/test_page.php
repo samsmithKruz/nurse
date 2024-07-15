@@ -12,7 +12,7 @@ require_once APPROOT . "/views/student/inc/header.php";
 <main>
   <section class="wrapper test">
     <div class="test-head">
-      <h3 style="text-transform: capitalize;">Test on <?=$test_name;?></h3>
+      <h3 style="text-transform: capitalize;"><?= $test_name; ?></h3>
       <div class="time">
         <span class="icon">
           <img src="<?= URLROOT; ?>/assets/timer.svg" alt="">
@@ -23,41 +23,30 @@ require_once APPROOT . "/views/student/inc/header.php";
     <form action="<?= URLROOT; ?>/student/test_submit" method="post" style="padding: 0;">
       <input type="hidden" name="id" value="<?= $id; ?>">
       <div class="questions">
-        <?php foreach ($tests as $key => $test) { ?>
+        <?php foreach ($tests as $key => $question) { ?>
           <div class="question">
-            <h4>Question <span><?= $key + 1; ?> of <?= count($tests); ?></span></h4>
-            <p class="q">
-              <?= $test->question; ?>
-            </p>
+            <h4>Question <span><?= $key + 1; ?></span></h4>
+            <div class="q_content">
+              <p class="q"><?= $question->question; ?></p>
+              <?php if (isset($question->rationale) && count(@$question->rationale) > 0) { ?>
+                <button type="button" class="rationale-toggle btn small primary">Show Rationale</button>
+                <div class="rationales">
+                  <?php foreach ($question->rationale as $e => $rationale) : ?>
+                    <img src="<?= URLROOT; ?>/test_rationale/<?= $rationale->path; ?>" alt="">
+                  <?php endforeach ?>
+                </div>
+              <?php } ?>
+            </div>
             <div class="options">
-              <div class="input">
-                <input type="radio" id="q<?= $key; ?>_opt1" name="<?= $test->question_id; ?>" value="<?= $test->op1; ?>">
-                <label for="q<?= $key; ?>_opt1">
-                  <div class="material-symbols-outlined">circle</div>
-                  <?= $test->op1; ?>
-                </label>
-              </div>
-              <div class="input">
-                <input required type="radio" id="q<?= $key; ?>_opt2" name="<?= $test->question_id; ?>" value="<?= $test->op2; ?>">
-                <label for="q<?= $key; ?>_opt2">
-                  <div class="material-symbols-outlined">circle</div>
-                  <?= $test->op2; ?>
-                </label>
-              </div>
-              <div class="input">
-                <input type="radio" id="q<?= $key; ?>_opt3" name="<?= $test->question_id; ?>" value="<?= $test->op3; ?>">
-                <label for="q<?= $key; ?>_opt3">
-                  <div class="material-symbols-outlined">circle</div>
-                  <?= $test->op3; ?>
-                </label>
-              </div>
-              <div class="input">
-                <input type="radio" id="q<?= $key; ?>_opt4" name="<?= $test->question_id; ?>" value="<?= $test->op4; ?>">
-                <label for="q<?= $key; ?>_opt4">
-                  <div class="material-symbols-outlined">circle</div>
-                  <?= $test->op4; ?>
-                </label>
-              </div>
+              <?php foreach ($question->options as $i => $option) : ?>
+                <div class="input">
+                  <input type="checkbox" class="" id="q<?= $key; ?>_opt<?= $i + 1; ?>" value="<?= $option->option_id; ?>" name="<?= $option->question_id; ?>[]" class="ck" />
+                  <label for="q<?= $key; ?>_opt<?= $i + 1; ?>">
+                    <div class="material-symbols-outlined">circle</div>
+                    <?= $option->option_text; ?>
+                  </label>
+                </div>
+              <?php endforeach ?>
             </div>
           </div>
         <?php } ?>
@@ -69,8 +58,8 @@ require_once APPROOT . "/views/student/inc/header.php";
   </section>
 </main>
 <?php if (!isset($_SESSION[APP]->flashMessage)) { ?>
-  <script src="<?=URLROOT;?>/js/toastify-js.js"></script>
-  <link rel="stylesheet" href="<?=URLROOT;?>/css/toastify.min.css">
+  <script src="<?= URLROOT; ?>/js/toastify-js.js"></script>
+  <link rel="stylesheet" href="<?= URLROOT; ?>/css/toastify.min.css">
   </script>
 <?php } ?>
 <script>
@@ -111,17 +100,28 @@ require_once APPROOT . "/views/student/inc/header.php";
   form.addEventListener("invalid", event => {
     event.preventDefault();
     Toastify({
-          text: "Answer all questions.",
-          duration: 3000,
-          close: true,
-          gravity: "top", 
-          position: "center", 
-          stopOnFocus: true, // Prevents dismissing of toast on hover
-          style: {
-            background: 'var(--danger)',
-          }
-        }).showToast();
-    console.log(event)
+      text: "Answer all questions.",
+      duration: 3000,
+      close: true,
+      gravity: "top",
+      position: "center",
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+      style: {
+        background: 'var(--danger)',
+      }
+    }).showToast();
+    setTimeout(() => {
+      document.querySelector("input[type=submit]").value = "Submit"
+    }, 1000);
   }, true)
+
+  let rationaleToggle = e => {
+    let rationales = e.target.parentElement.querySelector('.rationales');
+    rationales.classList.toggle("active");
+    e.target.textContent = rationales.classList.contains("active") ? "Hide Rationale" : "Show Rationale";
+  }
+  document.querySelectorAll(".q_content .rationale-toggle").forEach(i => {
+    i.addEventListener("click", rationaleToggle)
+  })
 </script>
 <?php require_once APPROOT . "/views/student/inc/footer.php"; ?>
