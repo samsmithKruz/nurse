@@ -397,21 +397,32 @@ class Admin extends Controller
     }
     public function test_watch()
     {
-        if (!isset($_GET['id'])) {
-            Auth::redirect("admin/");
+        if (!isset($_GET['id']) || !isset($_GET['user_id'])) {
+            $_SESSION[APP]->flashMessage = Helpers::response(array(
+                'state' => 0,
+                'message' => 'Unknown student\'s details.'
+            ));
+            Helpers::back("admin");
         }
-        $data = array();
-        switch (Auth::safe_data($_GET['id'])) {
-            case "a":
-                $data['type'] = "a";
-                break;
-            case "b":
-                $data['type'] = "b";
-                break;
-            default:
-                $data['type'] = "c";
-                break;
+        $test_details = $this->modelStudent->getTestDetails(Auth::safe_data($_GET['id']));
+        $data = [];
+        $data['id'] = Auth::safe_data($_GET['id']);
+        $data['timer'] = $test_details->time;
+        $data['test_name'] = $test_details->name;
+        $test = $this->model->loadUploadedTest(Auth::safe_data($_GET['id']));
+        $test_submit = $this->model->getSubmitted(Auth::safe_data($_GET['id']), Auth::safe_data($_GET['user_id']));
+
+        if (count($test) == 0 || !$test_submit) {
+            $_SESSION[APP]->flashMessage = Helpers::response(array(
+                'state' => 0,
+                'message' => "Unable to fetch test details.",
+            ));
+            Helpers::back('admin');
         }
+        $data['tests'] = $test;
+        $data['test_submit'] = $test_submit;
+
+
         $this->view("admin/test_watch", $data);
     }
 }

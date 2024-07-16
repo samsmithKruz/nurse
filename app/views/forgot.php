@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,15 @@
     <link rel="shortcut icon" href="./assets/fav.svg" type="image/x-icon" />
     <link rel="stylesheet" href="./css/login.css">
 </head>
+
 <body>
-<?= isset($_SESSION[APP]->flashMessage)?Helpers::flashMessage($_SESSION[APP]->flashMessage):"";?>
+    <?= isset($_SESSION[APP]->flashMessage) ? Helpers::flashMessage($_SESSION[APP]->flashMessage) : ""; ?>
     <div class="container">
         <img src="./assets/doctr.jpg" alt="">
-        <form action="<?=URLROOT;?>/forgot/reset" method="post">
-            <img src="./assets/logo.svg" alt="">
+        <form action="<?= URLROOT; ?>/forgot/reset" method="post">
+            <a href="<?= URLROOT; ?>">
+                <img src="<?= URLROOT; ?>/assets/logo.svg" alt="">
+            </a>
             <h2>Student Portal</h2>
             <div class="input">
                 <input type="email" name="email" placeholder="Enter your email address">
@@ -25,4 +29,5 @@
         </form>
     </div>
 </body>
+
 </html>

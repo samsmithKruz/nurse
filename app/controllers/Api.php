@@ -507,13 +507,14 @@ class Api extends Controller
         $sql = "
         SELECT 
             test_score.*,
-            users.fullname
+            users.fullname,
+            users.email
         FROM test_score
         LEFT JOIN users on
             test_score.user_id = users.email
         WHERE (1=1)  ";
         if (!empty(Auth::safe_data($_GET['class']))) {
-            $sql .= " AND (users.current_class = '$searchValue') ";
+            $sql .= " AND (users.current_class = '".Auth::safe_data($_GET['class'])."') ";
         }
         if (!empty($searchValue)) {
             $sql .= " AND (users.fullname like '%$searchValue%') ";

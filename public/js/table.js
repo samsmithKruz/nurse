@@ -527,6 +527,17 @@ let tb9 = new DataTable("#test_scores", {
                 let year = date.getFullYear();
                 return `${day}.${month}.${year} `;
             }
+        },
+        {
+            "data": null,
+            render: function (data, type, row) {
+
+                return `
+                <div class="btns">
+                  <a href="${baseUrl}/admin/test_watch?id=${row.test_id}&user_id=${row.user_id}" class="blue">View</a>
+                </div>
+                `;
+            }
         }
     ]
 })

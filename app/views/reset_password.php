@@ -12,7 +12,9 @@
     <div class="container">
         <img src="<?= URLROOT; ?>/assets/doctr.jpg" alt="">
         <form action="<?= URLROOT; ?>/forgot/reset_new" method="post">
-            <img src="<?= URLROOT; ?>/assets/logo.svg" alt="">
+        <a href="<?= URLROOT; ?>">
+                <img src="<?= URLROOT; ?>/assets/logo.svg" alt="">
+            </a>
             <h2>Reset Password</h2>
             <div class="input">
               <input type="hidden" name="token" value="<?=$token;?>">

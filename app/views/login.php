@@ -10,11 +10,14 @@
 </head>
 
 <body>
-<?= isset($_SESSION[APP]->flashMessage)?Helpers::flashMessage($_SESSION[APP]->flashMessage):"";?>
+    <?= isset($_SESSION[APP]->flashMessage) ? Helpers::flashMessage($_SESSION[APP]->flashMessage) : ""; ?>
     <div class="container">
         <img src="<?= URLROOT; ?>/assets/doctr.jpg" alt="">
+
         <form action="<?= URLROOT; ?>/login/validate" method="post">
-            <img src="<?= URLROOT; ?>/assets/logo.svg" alt="">
+            <a href="<?= URLROOT; ?>">
+                <img src="<?= URLROOT; ?>/assets/logo.svg" alt="">
+            </a>
             <h2>Student Portal</h2>
             <div class="input">
                 <input type="email" required name="email" placeholder="Enter your email address">

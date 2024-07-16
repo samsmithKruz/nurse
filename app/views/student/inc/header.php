@@ -6,30 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student || Foreign Nurse</title>
 
-<!-- Meta Description -->
-<meta name="description" content="Foreign Nurse Global (FNG) supports internationally trained nurses to achieve their dream of becoming US Registered Nurses. Explore our services and start your journey today!">
+    <!-- Meta Description -->
+    <meta name="description" content="Foreign Nurse Global (FNG) supports internationally trained nurses to achieve their dream of becoming US Registered Nurses. Explore our services and start your journey today!">
 
-<!-- Meta Keywords -->
-<meta name="keywords" content="Foreign Nurse Global, FNG, international nurses, USRN, NCLEX preparation, nursing credentialing, nursing licensure, healthcare careers, visa support for nurses">
+    <!-- Meta Keywords -->
+    <meta name="keywords" content="Foreign Nurse Global, FNG, international nurses, USRN, NCLEX preparation, nursing credentialing, nursing licensure, healthcare careers, visa support for nurses">
 
-<!-- Author -->
-<meta name="author" content="Foreign Nurse Global">
+    <!-- Author -->
+    <meta name="author" content="Foreign Nurse Global">
 
-<!-- Viewport for Responsive Design -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Viewport for Responsive Design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Open Graph Tags for Social Media Sharing -->
-<meta property="og:title" content="Foreign Nurse Global | Helping International Nurses Achieve USRN Dreams">
-<meta property="og:description" content="Foreign Nurse Global (FNG) supports internationally trained nurses to achieve their dream of becoming US Registered Nurses. Explore our services and start your journey today!">
-<meta property="og:image" content="<?=URLROOT;?>/assets/fav.svg">
-<meta property="og:url" content="https://www.foreignnurseglobal.com">
-<meta property="og:type" content="website">
+    <!-- Open Graph Tags for Social Media Sharing -->
+    <meta property="og:title" content="Foreign Nurse Global | Helping International Nurses Achieve USRN Dreams">
+    <meta property="og:description" content="Foreign Nurse Global (FNG) supports internationally trained nurses to achieve their dream of becoming US Registered Nurses. Explore our services and start your journey today!">
+    <meta property="og:image" content="<?= URLROOT; ?>/assets/fav.svg">
+    <meta property="og:url" content="https://www.foreignnurseglobal.com">
+    <meta property="og:type" content="website">
 
-<!-- Twitter Card Tags for Twitter Sharing -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Foreign Nurse Global | Helping International Nurses Achieve USRN Dreams">
-<meta name="twitter:description" content="Foreign Nurse Global (FNG) supports internationally trained nurses to achieve their dream of becoming US Registered Nurses. Explore our services and start your journey today!">
-<meta name="twitter:image" content="<?=URLROOT;?>/assets/fav.svg">
+    <!-- Twitter Card Tags for Twitter Sharing -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Foreign Nurse Global | Helping International Nurses Achieve USRN Dreams">
+    <meta name="twitter:description" content="Foreign Nurse Global (FNG) supports internationally trained nurses to achieve their dream of becoming US Registered Nurses. Explore our services and start your journey today!">
+    <meta name="twitter:image" content="<?= URLROOT; ?>/assets/fav.svg">
     <script src="<?= URLROOT; ?>/js/jquery-3.7.1.min.js"></script>
     <script src="<?= URLROOT; ?>/js/dataTables.js"></script>
     <link rel="stylesheet" href="<?= URLROOT; ?>/css/dataTables.css" />
@@ -71,3 +71,22 @@
             </div>
         </div>
     </header>
+    <script>
+        let label = document.querySelector("label[for=u]");
+        let handleNav = e => {
+            if (!e.target.closest(".dropdown")?.querySelector(".items")) {
+                label.click();
+                document.removeEventListener("click", handleNav)
+                document.removeEventListener("touchstart", handleNav)
+            }
+        };
+
+        label.onclick = e => {
+            let checkbox = label.parentElement.querySelector("input#u");
+
+            if (!checkbox.checked) {
+                document.addEventListener("click", handleNav)
+                document.addEventListener("touchstart", handleNav)
+            }
+        }
+    </script>

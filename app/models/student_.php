@@ -66,10 +66,6 @@ class student_ extends Database
             add_test.class = '$current_class'
             ");
         $this->db->bind(":id", $_SESSION[APP]->email);
-        // $this->db->bind(":class", $_SESSION[APP]->current_class);
-        // $result =  $this->db->single();
-        // print_r($result);
-        // exit();
         return $this->db->single()->average;
     }
     public function updateProfile($post)

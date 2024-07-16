@@ -75,3 +75,22 @@
       </div>
     </div>
   </header>
+  <script>
+    let label = document.querySelector("label[for=u]");
+    let handleNav = e => {
+      if (!e.target.closest(".dropdown")?.querySelector(".items")) {
+        label.click();
+        document.removeEventListener("click", handleNav)
+        document.removeEventListener("touchstart", handleNav)
+      }
+    };
+
+    label.onclick = e => {
+      let checkbox = label.parentElement.querySelector("input#u");
+      
+      if (!checkbox.checked) {
+        document.addEventListener("click", handleNav)
+        document.addEventListener("touchstart", handleNav)
+      }
+    }
+  </script>

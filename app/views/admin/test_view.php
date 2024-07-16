@@ -21,6 +21,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
               <th>Name</th>
               <th>Score</th>
               <th>Date</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>

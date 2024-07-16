@@ -983,11 +983,12 @@ class admin_ extends Database
             'score' => $score
         ));
     }
-    function getSubmitted($test_id)
+    function getSubmitted($test_id, $user_id = "")
     {
+        $user_id = $user_id == "" ? $_SESSION[APP]->email : $user_id;
         $this->db->query("SELECT question_id, choice from test_submit where test_id=:test_id and user_id=:user_id");
         $this->db->bind(":test_id", $test_id);
-        $this->db->bind(":user_id", $_SESSION[APP]->email);
+        $this->db->bind(":user_id", $user_id);
         $submitted = $this->db->resultSet();
         $result = new stdClass;
         foreach ($submitted as $i => $el) {
