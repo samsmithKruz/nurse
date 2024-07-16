@@ -131,11 +131,30 @@ class Student extends Controller
         if (!isset($_GET['id'])) {
             Auth::redirect("student/");
         }
-        $data = array();
+        if (!$this->model->testTaken(Auth::safe_data($_GET['id']))) {
+            $_SESSION[APP]->flashMessage = Helpers::response(array(
+                'state' => 0,
+                'message' => 'You have not submitted this test.'
+            ));
+            Helpers::back("student");
+        }
+        $test_details = $this->model->getTestDetails(Auth::safe_data($_GET['id']));
+        $data = [];
         $data['id'] = Auth::safe_data($_GET['id']);
-        $data['timer'] = 0.25;
-        print_r("View answered questions");
-        exit();
-        // $this->view("student/test_page",$data);
+        $data['timer'] = $test_details->time;
+        $data['test_name'] = $test_details->name;
+        $test = $this->modelAdmin->loadUploadedTest(Auth::safe_data($_GET['id']));
+        $test_submit = $this->modelAdmin->getSubmitted(Auth::safe_data($_GET['id']));
+        if (count($test) == 0 || !$test_submit) {
+            $_SESSION[APP]->flashMessage = Helpers::response(array(
+                'state' => 0,
+                'message' => "Unable to fetch test details.",
+            ));
+            Helpers::back('student');
+        }
+        $data['tests'] = $test;
+        $data['test_submit'] = $test_submit;
+        // print_r($test);exit();
+        $this->view("student/test_view",$data);
     }
 }

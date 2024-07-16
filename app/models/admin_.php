@@ -365,6 +365,7 @@ class admin_ extends Database
         foreach ($questions as $question) {
             $q = new stdClass;
             $q->question = $question->question;
+            $q->question_id = $question->question_id;
 
             $this->db->query("select option_id, question_id, is_correct, option_text,rationale from new_question_options where question_id=:id");
             $this->db->bind(":id", $question->question_id);
@@ -981,6 +982,18 @@ class admin_ extends Database
             'message' => "Test scored.",
             'score' => $score
         ));
+    }
+    function getSubmitted($test_id)
+    {
+        $this->db->query("SELECT question_id, choice from test_submit where test_id=:test_id and user_id=:user_id");
+        $this->db->bind(":test_id", $test_id);
+        $this->db->bind(":user_id", $_SESSION[APP]->email);
+        $submitted = $this->db->resultSet();
+        $result = new stdClass;
+        foreach ($submitted as $i => $el) {
+            $result->{$el->question_id} = explode(",", $el->choice);
+        }
+        return $result;
     }
     function getTestScore($id)
     {
