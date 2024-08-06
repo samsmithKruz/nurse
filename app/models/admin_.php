@@ -337,7 +337,8 @@ class admin_ extends Database
     }
     public function get_test_name($id)
     {
-        $this->db->query("select * from new_test");
+        $this->db->query("select * from new_test where id=:id");
+        $this->db->bind(":id", $id);
         return $this->db->single();
     }
     public function getTests()
@@ -857,12 +858,8 @@ class admin_ extends Database
         $this->db->bind(':question_id', $question_id);
         $this->db->bind(':test_id', $test_id);
         $this->db->execute();
-
-        if ($this->db->rowCount() > 0) {
-            $this->deleteRationale($question_id);
-            return (object)['state' => 1, 'message' => "Question deleted successfully."];
-        }
-        return (object)['state' => 0, 'message' => 'Unable to delete question.'];
+        $this->deleteRationale($question_id);
+        return (object)['state' => 1, 'message' => "Question deleted successfully."];
     }
 
     public function get_test_question($question_id)
@@ -874,10 +871,10 @@ class admin_ extends Database
             new_question_options.is_correct,
             new_question_options.rationale
         FROM new_test_questions
-        JOIN new_question_options ON
+        LEFT JOIN new_question_options ON
             new_question_options.question_id = new_test_questions.question_id
         WHERE 
-            new_question_options.question_id=:question_id
+            new_test_questions.question_id=:question_id
         ");
         $this->db->bind(":question_id", $question_id);
         return $this->db->resultSet();
@@ -896,52 +893,91 @@ class admin_ extends Database
     }
 
 
-
-    private function markTest($test_id)
+    private function markTest($test_id, $email = "")
     {
+        $email = $email == "" ? $_SESSION[APP]->email : $email;
 
-        $this->db->query("select * from test_submit where test_id=:test_id and user_id=:user_id");
+        // Fetch all test submissions for the given test_id and user_id
+        $this->db->query("SELECT * FROM test_submit WHERE test_id = :test_id AND user_id = :user_id");
         $this->db->bind(":test_id", $test_id);
-        $this->db->bind(":user_id", $_SESSION[APP]->email);
+        $this->db->bind(":user_id", $email);
         $options = $this->db->resultSet();
-        $user_score = 0;
-        foreach ($options as $k => $option) {
-            $ids = implode(",", array_map(function ($e) {
-                return '"' . $e . '"';
-            }, explode(",", $option->choice)));
-            $this->db->query("
-            SELECT 
-                SUM(is_correct) as score 
-            FROM new_question_options 
-            WHERE 
-                option_id IN($ids) and 
-                question_id=:question_id
-            ");
-            $this->db->bind(":question_id", $option->question_id);
-            $submitted = $this->db->single()->score;
 
-            $this->db->query("
-            SELECT
-                sum(is_correct) as correct
-            FROM new_question_options 
-            WHERE
-                question_id=:question_id
-            ");
-            $this->db->bind(":question_id", $option->question_id);
-            $correct = $this->db->single()->correct;
-            $user_score = $user_score + ($submitted / $correct);
+        $user_score = 0;
+        $total_questions = 0;
+
+        // Fetch all the required data in one go to reduce the number of queries
+        $question_ids = array_column($options, 'question_id');
+        if (empty($question_ids)) {
+            return 0; // No questions to process
         }
+        // $question_ids_str = implode(',', array_map('intval', $question_ids));
+        $question_ids_str = implode(',', array_map(function ($item) {
+            return '"' . $item . '"';
+        }, $question_ids));
+
+        // Fetch correct options for all questions
         $this->db->query("
-        select 
-            count(test_id) as total
-        from new_test_questions
-        where 
-            test_id=:test_id
+            SELECT 
+                option_id,
+                question_id
+            FROM new_question_options 
+            WHERE question_id IN ($question_ids_str) and is_correct=1
+        ");
+        $correct_options = $this->db->resultSet();
+        $correct_options_map = [];
+        foreach ($correct_options as $correct_option) {
+            $correct_options_map[$correct_option->question_id] = $correct_options_map[$correct_option->question_id] ?? [];
+            array_push($correct_options_map[$correct_option->question_id], $correct_option->option_id);
+        }
+        foreach ($options as $option) {
+            $submitted = explode(",", $option->choice);
+            $correct = $correct_options_map[$option->question_id] ?? 0;
+
+            // Total number of correct options
+            $totalCorrectOptions = count($correct);
+
+            // Check if there are correct options
+            if ($totalCorrectOptions > 0) {
+
+                // Calculate the number of correct and incorrect submissions
+                $totalSubmittedOptions = count($submitted);
+
+                if ($totalSubmittedOptions > 0) {
+                    $totalIncorrectSubmitted = count(array_diff($submitted, $correct));
+
+                    // Calculate the deduction
+                    $deduction = $totalIncorrectSubmitted / $totalSubmittedOptions;
+
+                    // Calculate the score
+                    $score = max(0, 1 - $deduction); // Score cannot be less than 0
+                } else {
+                    // If no options are submitted, set score to 0
+                    $score = 0;
+                }
+            } else {
+                // If there are no correct options, handle as needed
+                // Here we assume that if there are no correct options, score is 0
+                $score = 0;
+            }
+
+            $user_score += $score;
+        }
+
+        // Fetch the total number of questions for the test
+        $this->db->query("
+            SELECT 
+                COUNT(test_id) AS total
+            FROM new_test_questions
+            WHERE test_id = :test_id
         ");
         $this->db->bind(":test_id", $test_id);
-        $total = ($user_score / $this->db->single()->total) * 100;
-
-        return $total;
+        $total_questions = $this->db->single()->total;
+        if ($total_questions > 0) {
+            return ($user_score / $total_questions) * 100;
+        } else {
+            return 0; // Avoid division by zero
+        }
     }
     function submitTest($test_id, $questions)
     {
@@ -968,7 +1004,7 @@ class admin_ extends Database
             $this->db->execute();
         }
 
-        $score = $this->markTest($test_id);
+        $score = number_format($this->markTest($test_id), 2);
         $this->db->query("
         INSERT INTO test_score(test_id,user_id,score)
         values(:test_id,:user_id,:score)
@@ -981,6 +1017,32 @@ class admin_ extends Database
             'state' => 1,
             'message' => "Test scored.",
             'score' => $score
+        ));
+    }
+    function re_markTest($class,$test_id)
+    {
+        $this->db->query("SELECT email from users where current_class =:class");
+        $this->db->bind(":class", $class);
+        $users = $this->db->resultSet();
+        $sql = "";
+        foreach($users as $user){
+            $score = number_format($this->markTest($test_id, $user->email), 2);
+            $email = $user->email;
+            $sql .= " UPDATE test_score 
+                SET score=$score
+                WHERE user_id= '$email'; " ;
+        }
+        if($sql != ""){
+            $this->db->query($sql);
+            $this->db->execute();
+            return Helpers::response(array(
+                'state' => 1,
+                'message' => "Test remarked."
+            ));
+        }
+        return Helpers::response(array(
+            'state' => 0,
+            'message' => "Test not remarked."
         ));
     }
     function getSubmitted($test_id, $user_id = "")
@@ -1019,8 +1081,14 @@ class admin_ extends Database
         $class = @Auth::safe_data($post['class']) ?? "";
 
         $sql = "update users set enrollment_status =:enrollment, enrollment_date =CAST(:date AS DATETIME)";
+        $emailer = true;
         if (strlen($class) > 0) {
             $sql .= ", current_class = '$class'";
+
+            $this->db->query("select fullname, current_class from users where email=:email");
+            $this->db->bind(":email", $email);
+            $res = $this->db->single();
+            $emailer = $res->current_class == $class;
         }
         $sql .= " where email=:email";
         $this->db->query($sql);
@@ -1032,6 +1100,10 @@ class admin_ extends Database
             $this->db->query("delete from test_score where user_id=:email");
             $this->db->bind(":email", $email);
             $this->db->execute();
+
+            if (!$emailer) {
+                Helpers::send_enroll_email($res->fullname, $email, $class);
+            }
             return Helpers::response(array(
                 'state' => 1,
                 'message' => "Student updated.",
@@ -1042,12 +1114,109 @@ class admin_ extends Database
             'message' => "No changes made.",
         ));
     }
+    private function getAverageScore($id = "")
+    {
+        $id = $id == "" ? $_SESSION[APP]->email : $id;
+        $this->db->query("select current_class from users where email=:email");
+        $this->db->bind(":email", $id);
+        $current_class = $this->db->single()->current_class;
+
+
+        $this->db->query("
+        select 
+            avg(test_score.score) as average 
+        from test_score
+        join add_test on 
+            add_test.test_id = test_score.test_id
+        where 
+            test_score.user_id=:id and
+            add_test.class = '$current_class'
+            ");
+        $this->db->bind(":id", $id);
+        return $this->db->single()->average;
+    }
+
+    private function getRemark($score)
+    {
+        $remarks = REMARK;
+        krsort($remarks);
+        // Find the appropriate remark for the given score
+        foreach ($remarks as $threshold => $remark) {
+            if ($score >= $threshold) {
+                return $remark;
+                break;
+            }
+        }
+        return "";
+    }
+    function getReport($id, $score = "")
+    {
+        $score = $score == "" ? $this->getAverageScore($id) : $score;
+        $user = $this->getUser($id);
+
+
+        $this->db->query("SELECT count(id) as total from add_test where class=:class");
+        $this->db->bind(":class", $user->current_class);
+        $total_class_test = $this->db->single()->total;
+
+        $this->db->query("
+        SELECT 
+            count(test_score.id) as total 
+        FROM test_score 
+        LEFT JOIN add_test on
+            add_test.test_id = test_score.test_id
+        where 
+            add_test.class=:class and test_score.user_id =:user_id
+        ");
+        $this->db->bind(":class", $user->current_class);
+        $this->db->bind(":user_id", $id);
+        $total_attempted = $this->db->single()->total;
+
+        $remark = $this->getRemark($score);
+        $remark = str_replace("{{class}}", CLASSESS[$user->current_class], $remark);
+
+        return ['remark' => $remark, 'average' => $score, 'total_test' => $total_class_test, 'attempted' => $total_attempted];
+    }
+    function getClassIds($class)
+    {
+        $this->db->query("
+        SELECT 
+            email as id 
+        FROM users 
+        where 
+            current_class = :class
+        ");
+        $this->db->bind(":class", $class);
+        return $this->db->resultSet();
+    }
+    function send_report_email($ids)
+    {
+        foreach ($ids as $i => $id) {
+            $user = $this->getUser($id->id);
+            $report = $this->getReport($id->id);
+            Helpers::send_report_email(
+                [
+                    'fullname' => $user->fullname,
+                    'email' => $user->email,
+                    'current_class' => $user->current_class,
+                    'session' => SESSION,
+                    'pass_mark' => PASS_MARK,
+                    'report' => $report
+
+                ]
+            );
+        }
+        return (object)['state' => 1, 'message' => 'Report sent successfully.'];
+    }
     function unregisterUser($post)
     {
         $email = @Auth::safe_data($post['email']);
 
-        $sql = "update users set enrollment_status =0, enrollment_date ='0000-00-00 00:00:00', current_class=''";
-        $sql .= " where email=:email";
+        $sql = "update users set enrollment_status =0, enrollment_date ='0000-00-00 00:00:00', current_class=''  where email=:email;";
+        // Delete submitted test
+        $sql .= "delete from test_submit where user_id=:email;";
+        // Delete test score
+        $sql .= "delete from test_score where user_id=:email;";
         $this->db->query($sql);
         $this->db->bind(":email", $email);
         $this->db->execute();

@@ -3,13 +3,13 @@ $styles = '
 <link rel="stylesheet" href="' . URLROOT . '/css/index-admin.css">
 <link rel="stylesheet" href="' . URLROOT . '/css/class.css">
 <link rel="stylesheet" href="' . URLROOT . '/css/question_take.css">
-<link rel="stylesheet" href="' . URLROOT . '/css/student_overview.css">
 
 <link rel="stylesheet" href="' . URLROOT . '/css/style.css" />
     <link rel="stylesheet" href="' . URLROOT . '/css/test_view.css" />
 
 
 ';
+
 require_once APPROOT . "/views/student/inc/header.php";
 ?>
 <main>
@@ -34,16 +34,20 @@ require_once APPROOT . "/views/student/inc/header.php";
           </div>
           <div class="options">
             <?php foreach ($question->options as $i => $option) : ?>
-              <?php if (in_array($option->option_id, $test_submit->{$question->question_id})) : ?>
-                <?php $status = ($option->is_correct == 1) ? "correct" : "fail"; ?>
-              <?php else : ?>
-                <?php $status = ($option->is_correct == 1) ? "correct" : ""; ?>
-              <?php endif ?>
+            <?php
+            $status = ($option->is_correct == 1) ? "correct" : "";
+              if($test_submit->{$question->question_id}){
+                  if(in_array($option->option_id, $test_submit->{$question->question_id})){
+                       $status = ($option->is_correct == 1) ? "correct" : "fail";
+                  }
+              }
+            ?>
+              
               <div class="input">
                 <input type="checkbox" disabled class="<?= $status; ?>" value="<?= $option->option_id; ?>" class="ck" />
                 <label>
                   <div class="material-symbols-outlined">circle</div>
-                  <?= $option->option_text; ?>
+                  <?= htmlspecialchars($option->option_text); ?>
                 </label>
               </div>
             <?php endforeach ?>

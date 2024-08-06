@@ -84,7 +84,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
             <p>
               <?= $notice->notice_text; ?>
             </p>
-            <a href="<?= URLROOT . "/admin/delete_notice?id=" . $notice->id; ?>" class="delete">Delete</a>
+            <a href="<?= URLROOT . "/admin/delete_notice?id=" . $notice->id; ?>" onclick="confirmDelete(event)" class="delete">Delete</a>
           </div>
         <?php } ?>
       </div>
@@ -150,7 +150,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
     </div>
   </section>
 </main>
-<script src="<?= URLROOT; ?>/js/table.js"></script>
+<script src="<?= URLROOT; ?>/js/table.js?<?=mt_rand();?>"></script>
 <?php
 require_once APPROOT . "/views/admin/inc/footer.php";
 ?>

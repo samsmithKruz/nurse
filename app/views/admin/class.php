@@ -1,4 +1,5 @@
 <?php
+
 $styles = '
 <link rel="stylesheet" href="' . URLROOT . '/css/index-admin.css">
 <link rel="stylesheet" href="' . URLROOT . '/css/class.css">
@@ -26,6 +27,10 @@ require_once APPROOT . "/views/admin/inc/header.php";
           <tbody>
           </tbody>
         </table>
+      </div>
+      <!-- ///// Send report to students -->
+      <div class="btn-group" style="padding: .8rem 1;justify-content: center;width:100%;background-color: #f8f9fc;border-top:1px solid #e3e6f0;">
+        <a href="<?= URLROOT; ?>/admin/send_report_email?class=<?= $t; ?>" class="btn primary">Send Report Mail</a>
       </div>
     </div>
   </section>
@@ -170,7 +175,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
   </section>
 </main>
 
-<script src="<?= URLROOT; ?>/js/table.js"></script>
+<script src="<?= URLROOT; ?>/js/table.js?<?=mt_rand();?>"></script>
 <?php
 require_once APPROOT . "/views/admin/inc/footer.php";
 ?>

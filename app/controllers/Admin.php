@@ -125,6 +125,19 @@ class Admin extends Controller
         }
         Auth::redirect("admin/upload");
     }
+    public function re_mark()
+    {
+
+        if (!isset($_GET['class']) || !isset($_GET['test_id'])) {
+            $_SESSION[APP]->flashMessage = Helpers::response(array(
+                'state' => 0,
+                'message' => "Class is not set.",
+            ));
+            Helpers::back('admin');
+        }
+        $_SESSION[APP]->flashMessage = $this->model->re_markTest(Auth::safe_data($_GET['class']),Auth::safe_data($_GET['test_id']));
+        Helpers::back("admin");
+    }
     public function test_maker()
     {
         $this->view("admin/test_maker");
@@ -193,7 +206,6 @@ class Admin extends Controller
 
         $id =  $this->model->get_test_name(Auth::safe_data($_GET['id']));
         $question_ids =  $this->model->get_question_ids(Auth::safe_data($_GET['id']));
-        // print_r($question_ids);exit();
         if (!$id) {
             $_SESSION[APP]->flashMessage = Helpers::response(array(
                 'state' => 0,
@@ -209,6 +221,7 @@ class Admin extends Controller
 
         if (isset($_GET['q_id']) && !empty(@$_GET['q_id'])) {
             $question =  $this->model->get_test_question(Auth::safe_data($_GET['q_id']));
+        // print_r($question);exit();
             if (!$question) {
                 $_SESSION[APP]->flashMessage = Helpers::response(array(
                     'state' => 0,
@@ -333,9 +346,24 @@ class Admin extends Controller
             $_SESSION[APP]->flashMessage = $res;
         }
         $data = array();
-        $data = $this->model->getUser(Auth::safe_data($_GET['id']));
+        $data = (array) $this->model->getUser(Auth::safe_data($_GET['id']));
+        $report = $this->model->getReport(Auth::safe_data($_GET['id']), $this->modelStudent->getAverageScore($data['current_class'], $data['email']));
+        $data = array_merge($data, $report);
         // print_r($data);exit();
         $this->view("admin/student_overview", $data);
+    }
+    public function send_report_email()
+    {
+        if (!(isset($_GET['id']) || isset($_GET['class']))) {
+            $_SESSION[APP]->flashMessage = Helpers::response(array(
+                'state' => 0,
+                'message' => "Cannot send report to undefined students.",
+            ));
+            Helpers::back("admin");
+        }
+        $ids = isset($_GET['id']) ? [(object)['id' => Auth::safe_data($_GET['id'])]] : $this->model->getClassIds(Auth::safe_data($_GET['class']));
+        $_SESSION[APP]->flashMessage = $this->model->send_report_email($ids);
+        Helpers::back("admin");
     }
     public function test_view()
     {

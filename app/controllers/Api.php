@@ -70,10 +70,11 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql .= " order by $orderColumnName $orderDirection";
         }
+        $count_ = count($this->mainModel->getData($sql));
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
 
-        echo json_encode(array('recordsTotal' => $this->mainModel->getTotalStudents(), 'recordsFiltered' => count($data), "data" => $data));
+        echo json_encode(array('recordsTotal' => $this->mainModel->getTotalStudents(), 'recordsFiltered' => $count_, "data" => $data));
         exit();
     }
     public function getAllStaffs()
@@ -92,10 +93,11 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql .= " order by $orderColumnName $orderDirection";
         }
+        $count_ = count($this->mainModel->getData($sql));
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
 
-        echo json_encode(array('recordsTotal' => $this->mainModel->getTotalStudents(), 'recordsFiltered' => count($data), "data" => $data));
+        echo json_encode(array('recordsTotal' => $this->mainModel->getTotalStudents(), 'recordsFiltered' => $count_, "data" => $data));
         exit();
     }
     public function getAllUsersByClass()
@@ -115,10 +117,11 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql .= " order by $orderColumnName $orderDirection";
         }
+        $count_ = count($this->mainModel->getData($sql));
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
 
-        echo json_encode(array('recordsTotal' => $this->mainModel->getTotalStudents(), 'recordsFiltered' => count($data), "data" => $data));
+        echo json_encode(array('recordsTotal' => $this->mainModel->getTotalStudents(), 'recordsFiltered' => $count_, "data" => $data));
         exit();
     }
     public function getUploads()
@@ -137,11 +140,12 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql .= " order by $orderColumnName $orderDirection";
         }
+        $count_ = count($this->mainModel->getData($sql));
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
         $total = $this->mainModel->getData("select count(id) as total from file_uploads")[0]->total;
 
-        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => count($data), "data" => $data));
+        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => $count_, "data" => $data));
         exit();
     }
     public function generalLibrary()
@@ -169,6 +173,7 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql .= " order by file_uploads.$orderColumnName $orderDirection";
         }
+        $count_ = count($this->mainModel->getData($sql));
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
         $total = $this->mainModel->getData("select count(id) as total from add_file where section_type='general_library'")[0]->total;
@@ -191,6 +196,7 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql2 .= " order by $orderColumnName $orderDirection";
         }
+        $count2_ = count($this->mainModel->getData($sql));
         $sql2 .= " limit $start, $length";
         $data2 = $this->mainModel->getData($sql2);
         $total2 = $this->mainModel->getData("select count(id) as total from add_link where section_type='general_library'")[0]->total;
@@ -198,7 +204,7 @@ class Api extends Controller
         $data_ = array_merge($data, $data2);
         $total_ = $total + $total2;
 
-        echo json_encode(array('recordsTotal' => $total_, 'recordsFiltered' => count($data_), "data" => $data_));
+        echo json_encode(array('recordsTotal' => $total_, 'recordsFiltered' => (int)$count2_+ (int)$count_, "data" => $data_));
         exit();
     }
     public function generalLibrary_()
@@ -227,6 +233,7 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql .= " order by file_uploads.$orderColumnName $orderDirection";
         }
+        $count_ = count($this->mainModel->getData($sql));
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
         $total = $this->mainModel->getData("select count(id) as total from add_file where section_type='general_library'")[0]->total;
@@ -250,6 +257,7 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql2 .= " order by $orderColumnName $orderDirection";
         }
+        $count2_ = count($this->mainModel->getData($sql));
         $sql2 .= " limit $start, $length";
         $data2 = $this->mainModel->getData($sql2);
         $total2 = $this->mainModel->getData("select count(id) as total from add_link where section_type='general_library'")[0]->total;
@@ -257,7 +265,7 @@ class Api extends Controller
         $data_ = array_merge($data, $data2);
         $total_ = $total + $total2;
 
-        echo json_encode(array('recordsTotal' => $total_, 'recordsFiltered' => count($data_), "data" => $data_));
+        echo json_encode(array('recordsTotal' => $total_, 'recordsFiltered' => (int)$count2_+(int)$count_, "data" => $data_));
         exit();
     }
     public function classNotes($params)
@@ -286,6 +294,7 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql .= " order by file_uploads.$orderColumnName $orderDirection";
         }
+        $count_ = count($this->mainModel->getData($sql));
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
         $total = $this->mainModel->getData("select count(id) as total from add_file where section_type='general_library'")[0]->total;
@@ -308,6 +317,7 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql2 .= " order by $orderColumnName $orderDirection";
         }
+        $count2_ = count($this->mainModel->getData($sql));
         $sql2 .= " limit $start, $length";
         $data2 = $this->mainModel->getData($sql2);
         $total2 = $this->mainModel->getData("select count(id) as total from add_link where section_type='general_library'")[0]->total;
@@ -315,7 +325,7 @@ class Api extends Controller
         $data_ = array_merge($data, $data2);
         $total_ = $total + $total2;
 
-        echo json_encode(array('recordsTotal' => $total_, 'recordsFiltered' => count($data_), "data" => $data_));
+        echo json_encode(array('recordsTotal' => $total_, 'recordsFiltered' => (int)$count_+(int)$count2_, "data" => $data_));
         exit();
     }
     public function classNotes_($params)
@@ -344,11 +354,12 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql .= " order by file_uploads.$orderColumnName $orderDirection";
         }
+        $count_ = count($this->mainModel->getData($sql));
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
         $total = $this->mainModel->getData("select count(id) as total from add_file where section_type='general_library'")[0]->total;
 
-        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => count($data), "data" => $data));
+        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => $count_, "data" => $data));
         exit();
     }
     public function timetable($params)
@@ -377,12 +388,13 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql .= " order by file_uploads.$orderColumnName $orderDirection";
         }
+        $count_ = count($this->mainModel->getData($sql));
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
         $total = $this->mainModel->getData("select count(id) as total from add_timetable where section_type='$_'")[0]->total;
 
 
-        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => count($data), "data" => $data));
+        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => $count_, "data" => $data));
         exit();
     }
     public function uploadedTests()
@@ -409,17 +421,18 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql .= " order by new_test.name $orderDirection";
         }
+        $count_ = count($this->mainModel->getData($sql));
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
         $total = $this->mainModel->getData("select count(id) as total from new_test ")[0]->total;
 
 
-        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => count($data), "data" => $data));
+        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => $count_, "data" => $data));
         exit();
     }
     public function test($params)
     {
-        $_ = empty($params) ? "" : " AND class ='" . $params[0] . "'";
+        $_ = !(count($params) > 0) ? "" : " AND class ='" . $params[0] . "'";
         $start = $_POST['start'];
         $length = $_POST['length'];
         $searchValue = $_POST['search']['value'];
@@ -442,12 +455,13 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql .= " order by new_test.name $orderDirection";
         }
+        $count_ = count($this->mainModel->getData($sql));
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
         $total = $this->mainModel->getData("select count(id) as total from add_test where (1=1) $_ ")[0]->total;
 
 
-        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => count($data), "data" => $data));
+        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => $count_, "data" => $data));
         exit();
     }
     public function student_test($params)
@@ -478,7 +492,7 @@ class Api extends Controller
             test_score ts ON 
             u.email = ts.user_id AND t.id = ts.test_id
         WHERE
-            at.status = 1 AND u.email = '$user_id'
+            at.status = 1 AND u.email = '$user_id' AND at.class='$_'
             
         ";
         if (!empty($searchValue)) {
@@ -487,12 +501,13 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql .= " order by t.name $orderDirection";
         }
+        $count_ = count($this->mainModel->getData($sql));
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
         $total = $this->mainModel->getData("select count(id) as total from add_test where class= '$_' ")[0]->total;
 
 
-        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => count($data), "data" => $data));
+        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => $count_, "data" => $data));
         exit();
     }
     public function test_scores()
@@ -523,12 +538,13 @@ class Api extends Controller
         if ($orderColumnName != "") {
             $sql .= " order by users.fullname $orderDirection";
         }
+        $count_ = count($this->mainModel->getData($sql));
         $sql .= " limit $start, $length";
         $data = $this->mainModel->getData($sql);
         $total = $this->mainModel->getData("select count(id) as total from test_score ")[0]->total;
 
 
-        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => count($data), "data" => $data));
+        echo json_encode(array('recordsTotal' => $total, 'recordsFiltered' => $count_, "data" => $data));
         exit();
     }
 }

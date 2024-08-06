@@ -36,7 +36,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
     </div>
   </section>
 </main>
-<script src="<?=URLROOT;?>/js/table.js"></script>
+<script src="<?=URLROOT;?>/js/table.js?<?=mt_rand();?>"></script>
 <?php
 require_once APPROOT . "/views/admin/inc/footer.php";
 ?>

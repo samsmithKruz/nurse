@@ -108,13 +108,13 @@ require_once APPROOT . "/views/inc/header.php";
     <div class="wrapper">
       <div class="content">
         <h5 class="_">Registration is Open</h5>
-        <h3 class="_">NCLEX ONLINE CLASS (June/July)</h3>
+        <h3 class="_">NCLEX ONLINE CLASS (<?= SESSION;?>)</h3>
         <p class="_">
-          Secure your spot in our upcoming NCLEX online class for June/July! Join Foreign Nurse Global's expert-led sessions to enhance your preparation and increase your chances of success. Don't miss this opportunity to achieve your dream of becoming a USRN with our comprehensive and supportive training program. Register now and take the next step in your nursing career!
+          Secure your spot in our upcoming NCLEX online class for <?= SESSION;?>! Join Foreign Nurse Global's expert-led sessions to enhance your preparation and increase your chances of success. Don't miss this opportunity to achieve your dream of becoming a USRN with our comprehensive and supportive training program. Register now and take the next step in your nursing career!
         </p>
         <a href="<?= URLROOT; ?>/signup" class="btn primary">Register</a>
       </div>
-      <img src="<?= URLROOT; ?>/assets/flyer.png" alt="" />
+      <img src="<?= URLROOT; ?>/assets/flyer.png?112" alt="" />
     </div>
   </section>
   <section id="services">

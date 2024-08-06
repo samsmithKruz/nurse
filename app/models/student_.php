@@ -44,7 +44,7 @@ class student_ extends Database
         where section_type=:class
         ");
         $this->db->bind(":class", $class);
-        return $this->db->single()->source ?? [];
+        return $this->db->single()->source ?? "";
     }
     public function getTestDetails($id)
     {
@@ -52,9 +52,14 @@ class student_ extends Database
         $this->db->bind(":id", $id);
         return $this->db->single();
     }
-    public function getAverageScore($current_class = "")
+    public function getAverageScore($current_class = "", $id = "")
     {
-        // $this->db->query("select avg(test_score.score) as average from test_score left join add_test on add_test.test_id=test_score.test_id where test_score.user_id=:id and add_test.class =:class group by test_score.test_id");
+        $id = $id == "" ? $_SESSION[APP]->email : $id;
+        $this->db->query("select current_class from users where email=:email");
+        $this->db->bind(":email", $id);
+        $current_class = $this->db->single()->current_class;
+        
+        
         $this->db->query("
         select 
             avg(test_score.score) as average 
@@ -65,7 +70,7 @@ class student_ extends Database
             test_score.user_id=:id and
             add_test.class = '$current_class'
             ");
-        $this->db->bind(":id", $_SESSION[APP]->email);
+        $this->db->bind(":id", $id);
         return $this->db->single()->average;
     }
     public function updateProfile($post)

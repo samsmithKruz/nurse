@@ -1,3 +1,8 @@
+<?php
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,6 +10,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student || Foreign Nurse</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+      function confirmDelete(event) {
+          event.preventDefault();
+        
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "Confirm this action!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor:'#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok',
+            cancelButtonText: 'Cancel'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Perform delete action
+              window.location.href = event.target.href
+            }
+          });
+        }
+  </script>
 
     <!-- Meta Description -->
     <meta name="description" content="Foreign Nurse Global (FNG) supports internationally trained nurses to achieve their dream of becoming US Registered Nurses. Explore our services and start your journey today!">

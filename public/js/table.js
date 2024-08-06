@@ -48,10 +48,10 @@ let tb1 = new DataTable("#students", {
                 return `
                 <div class="btns">
                 ${(t_ == "2" ? `
-                    <a href="${baseUrl}/admin/make_admin?id=${row.email}" class="blue">Make Admin</a>
+                    <a href="${baseUrl}/admin/make_admin?id=${row.email}" onclick="confirmDelete(event)" class="blue">Make Admin</a>
                     `: ``)}
                   <a href="${baseUrl}/admin/student_overview?id=${row.email}">View</a>
-                  <a href="${baseUrl}/admin/student_delete?id=${row.email}" class="red">Remove</a>
+                  <a href="${baseUrl}/admin/student_delete?id=${row.email}" onclick="confirmDelete(event)" class="red">Remove</a>
                 </div>
                 `;
             }
@@ -102,7 +102,7 @@ let tb1__ = new DataTable("#staffs", {
             render: function (data, type, row) {
                 return `
                 <div class="btns">
-                  <a href="${baseUrl}/admin/staff_delete?id=${row.email}" class="red">Remove</a>
+                  <a href="${baseUrl}/admin/staff_delete?id=${row.email}" onclick="confirmDelete(event)" class="red">Remove</a>
                 </div>
                 `;
             }
@@ -154,7 +154,7 @@ let tb2 = new DataTable("#class", {
                 return `
                 <div class="btns">
                   <a href="${baseUrl}/admin/student_overview?id=${row.email}">View</a>
-                  <a href="${baseUrl}/admin/student_delete?id=${row.email}" class="red">Remove</a>
+                  <a href="${baseUrl}/admin/student_delete?id=${row.email}" onclick="confirmDelete(event)" class="red">Remove</a>
                 </div>
                 `;
             }
@@ -199,7 +199,7 @@ let tb3 = new DataTable("#fileUpload", {
             render: function (data, type, row) {
                 return `
                 <a href="${baseUrl}/uploads/${data}" class="blue">View</a>
-                <a href="${baseUrl}/admin/deleteUploads?id=${data}" class="red">Delete</a>
+                <a href="${baseUrl}/admin/deleteUploads?id=${data}" onclick="confirmDelete(event)" class="red">Delete</a>
                 `;
             }
         }
@@ -232,7 +232,7 @@ let tb4 = new DataTable("#general_library", {
             "data": null,
             render: function (data, type, row) {
                 return `
-                <a href="${baseUrl}/admin/fileRemove?section=general_library&id=${row.id}&type=${row.type == 'file' ? 'file' : 'link'}" class="red">Remove</a>
+                <a href="${baseUrl}/admin/fileRemove?section=general_library&id=${row.id}&type=${row.type == 'file' ? 'file' : 'link'}" onclick="confirmDelete(event)" class="red">Remove</a>
                 `;
             }
         }
@@ -277,7 +277,7 @@ let tb4_ = new DataTable("#student_general_library", {
             render: function (data, type, row) {
                 console.log(row);
                 return `
-                <a href="${row.type == 'link' ? row.filename : baseUrl + "/uploads/" + row.source}" class="red">View</a>
+                <a href="${row.type == 'link' ? row.filename : baseUrl + "/uploads/" + row.source}" >View</a>
                 `;
             }
         }
@@ -311,7 +311,7 @@ let tb5 = new DataTable("#classNotes", {
             render: function (data, type, row) {
                 return `
                 <a target="_blank" href="${row.type == 'file' ? baseUrl + "/uploads/" + row.source : row.filename}"  class="blue">View</a>
-                <a href="${baseUrl}/admin/fileRemove?section=${t}&id=${row.id}&type=${row.type == 'file' ? 'file' : 'link'}" class="red">Remove</a>
+                <a href="${baseUrl}/admin/fileRemove?section=${t}&id=${row.id}&type=${row.type == 'file' ? 'file' : 'link'}" onclick="confirmDelete(event)" class="red">Remove</a>
                 `;
             }
         }
@@ -389,7 +389,7 @@ let tb6 = new DataTable("#timetable", {
             render: function (data, type, row) {
                 return `
                 <a target="_blank" href="${row.type == 'file' ? baseUrl + "/uploads/" + row.source : row.filename}"  class="blue">View</a>
-                <a href="${baseUrl}/admin/fileRemove?section=${t}&id=${row.id}&type=timetable" class="red">Remove</a>
+                <a href="${baseUrl}/admin/fileRemove?section=${t}&id=${row.id}&type=timetable" onclick="confirmDelete(event)" class="red">Remove</a>
                 `;
             }
         }
@@ -430,7 +430,7 @@ let tb7 = new DataTable("#test", {
             "data": null,
             render: function (data, type, row) {
                 return `
-                <a href="${baseUrl}/admin/test_view?id=${row.id}&class=${t}"  class="blue">View</a>
+                <a href="${baseUrl}/admin/test_view?id=${row.test_id}&class=${t}"  class="blue">View</a>
                 `;
             }
         },
@@ -438,9 +438,9 @@ let tb7 = new DataTable("#test", {
             "data": null,
             render: function (data, type, row) {
                 return `
-                <a href="${baseUrl}/admin/start_op?type=start&id=${row.id}"  class="blue">Start</a>
-                <a href="${baseUrl}/admin/start_op?type=end&id=${row.id}"  >End</a>
-                <a href="${baseUrl}/admin/start_op?type=remove&id=${row.id}" class="red">Remove</a>
+                <a href="${baseUrl}/admin/start_op?type=start&id=${row.id}" onclick="confirmDelete(event)" class="blue">Start</a>
+                <a href="${baseUrl}/admin/start_op?type=end&id=${row.id}" onclick="confirmDelete(event)" >End</a>
+                <a href="${baseUrl}/admin/start_op?type=remove&id=${row.id}" onclick="confirmDelete(event)" class="red">Remove</a>
                 `;
             }
         }
@@ -485,7 +485,7 @@ let tb8 = new DataTable("#test_maker", {
                 return `
                 <div class="btns">
                     <a href="${baseUrl}/admin/test_name?id=${row.id}" class="">Edit</a>
-                    <a href="${baseUrl}/admin/test_delete?id=${row.id}" class="red">Delete</a>
+                    <a href="${baseUrl}/admin/test_delete?id=${row.id}" onclick="confirmDelete(event)" class="red">Delete</a>
                   </div>`;
             }
         }
@@ -572,7 +572,7 @@ let tb10 = new DataTable("#test_t", {
             "data": null,
             render: function (data, type, row) {
                 if (row.score == null) {
-                    return `<a href="${baseUrl}/student/test?id=${row.id}" class="">start test</a>`
+                    return `<a href="${baseUrl}/student/test?id=${row.id}" onclick="confirmDelete(event)" class="">start test</a>`
                 }
                 return `<a href="${baseUrl}/student/watch_test?id=${row.id}" class="">View test</a>`
             }

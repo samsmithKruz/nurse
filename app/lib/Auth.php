@@ -97,7 +97,7 @@ class Auth extends Database
     }
     public static function isLoggedin($type)
     {
-        if ($_SESSION[APP]->is_admin != $type) {
+        if (!isset($_SESSION[APP]->is_admin) || $_SESSION[APP]->is_admin != $type) {
             self::redirect("logout/");
         }
         return true;

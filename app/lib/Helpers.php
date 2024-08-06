@@ -261,6 +261,85 @@ class Helpers
 
     return Auth::sendMail($receiver, "Password Reset", $message);
   }
+  public static function send_enroll_email($name, $email, $class)
+  {
+    $name = ucwords($name);
+    $class = strtoupper(CLASSESS[$class]);
+    $message =  "
+      <p> Hello $name</p>
+      <br>
+      <p>
+        You have been enrolled for the $class [" . SESSION . "], you can now access the class on your portal. <br>
+        <a href=" . URLROOT . ">" . URLROOT . "</a>
+        <br><br>
+      </p>
+      <p>
+        For Tech complaints or enquiries, send a message to the official admin. <br><br>
+      </p>
+      <p>
+        Thank you.
+      </p>
+    ";
+
+    return Auth::sendMail($email, "Enrollment Successful - $name", $message);
+  }
+  public static function send_report_email($data)
+  {
+    extract($data);
+    extract($report);
+
+    $message =  "
+    <p>
+    Hello $fullname, <br><br>
+    </p>
+    <p>
+    
+    Here is a Summary of your Class Tests for <b>". CLASSESS[$current_class] ." [$session] BATCH</b>. Your Final Result goes as follows:
+    </p>
+    <p>
+      <ul>
+        <li>
+          <b>Total Class Tests:</b> $total_test
+        </li>
+        <li>
+          <b>Attempted Tests/Unattempted Tests:</b> $attempted / $total_test
+        </li>
+        <li>
+          <b>Score Percentage: </b>$average%
+        </li>
+        <li>
+          <b>Pass Mark:</b> $pass_mark%
+        </li>
+        <li>
+          <b>Number of Tests to be Attempted: </b> $total_test.
+        </li>
+      </ul>
+    </p>
+    <p><b>Final Remark</b></p>
+    <p>
+    $remark
+    </p>
+    <p>
+    The Academy requires you to be diligent in taking your daily test in class and also attending class Lectures.
+    </p>
+    <p>
+    Registration is ongoing.
+    </p>
+    <p>
+    This has proven so far to help improve our student and we are recommending this for you.
+    </p>
+
+    <p>
+    If you have any concerns, feel free to reach any of the instructors.
+    </p>
+
+    <p>
+    For Registration, Kindly proceed to:
+    " . URLROOT . "
+    </p>
+    ";
+    return Auth::sendMail($email, "FGN: REPORT[$session] - ". CLASSESS[$current_class], $message);
+  }
   public static function send_contact_email($name, $email, $phone, $message)
   {
     $message =  "

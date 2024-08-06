@@ -7,7 +7,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
 ?>
 <main>
   <section class="container wrapper">
-    <input type="hidden" name="t" value="<?=Auth::safe_data($_GET['class']);?>">
+    <input type="hidden" name="t" value="<?= Auth::safe_data($_GET['class']); ?>">
     <label for="content4" class="head">
       Results
       <span class="material-symbols-outlined"> arrow_right </span>
@@ -29,12 +29,13 @@ require_once APPROOT . "/views/admin/inc/header.php";
         </table>
       </div>
       <div class="btn-group" style="padding: 2rem;">
-      <a href="javascript:history.back()" class="btn primary">Continue</a>
-    </div>
+        <a href="<?= URLROOT . "/admin/re_mark?class=" . Auth::safe_data($_GET['class']) . "&test_id=". Auth::safe_data($_GET['id']); ?>" class="btn green">Remark</a>
+        <a href="javascript:history.back()" class="btn primary">Continue</a>
+      </div>
     </div>
   </section>
 </main>
-<script src="<?= URLROOT; ?>/js/table.js"></script>
+<script src="<?= URLROOT; ?>/js/table.js?<?= mt_rand(); ?>"></script>
 <?php
 require_once APPROOT . "/views/admin/inc/footer.php";
 ?>

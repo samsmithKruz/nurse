@@ -40,7 +40,7 @@ class Student extends Controller
                 'state' => 0,
                 'message' => "Test submission is invalid.",
             ));
-            Helpers::back('admin');
+            Helpers::back('student');
         }
         $test_id = $_POST['id'];
         unset($_POST['id']);
@@ -49,24 +49,24 @@ class Student extends Controller
         if ($_SESSION[APP]->flashMessage->state == 0) {
             Auth::redirect("student");
         }
-        Auth::redirect("student/test_score?id=".$test_id);
+        Auth::redirect("student/test_score?id=" . $test_id);
     }
-    public function test_score(){
+    public function test_score()
+    {
         if (!isset($_GET['id'])) {
             Auth::redirect("student/");
         }
         $data = [];
         $score = $this->modelAdmin->getTestScore(Auth::safe_data($_GET['id']));
-        if(!$score){
+        if (!$score) {
             $_SESSION[APP]->flashMessage = (object)[
-                'state'=>0,
-                'message'=> 'Test score was not found.'
+                'state' => 0,
+                'message' => 'Test score was not found.'
             ];
             Auth::redirect("student/");
         }
         $data['score'] = $score;
         $this->view("student/test_score", $data);
-
     }
     public function class()
     {
@@ -155,6 +155,6 @@ class Student extends Controller
         $data['tests'] = $test;
         $data['test_submit'] = $test_submit;
         // print_r($test);exit();
-        $this->view("student/test_view",$data);
+        $this->view("student/test_view", $data);
     }
 }

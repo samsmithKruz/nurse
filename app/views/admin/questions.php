@@ -1,8 +1,9 @@
 <?php
+$r = mt_rand();
 $styles = '
-  <link rel="stylesheet" href="' . URLROOT . '/css/index-admin.css">
-  <link rel="stylesheet" href="' . URLROOT . '/css/style.css">
-  <link rel="stylesheet" href="' . URLROOT . '/css/styles.css" />
+  <link rel="stylesheet" href="' . URLROOT . '/css/index-admin.css?'.$r.'">
+  <link rel="stylesheet" href="' . URLROOT . '/css/style.css?'.$r.'">
+  <link rel="stylesheet" href="' . URLROOT . '/css/styles.css?'.$r.'" />
 ';
 require_once APPROOT . "/views/admin/inc/header.php";
 ?>
@@ -19,7 +20,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
         <input type="hidden" name="q_id" value="<?= Auth::safe_data(@$_GET['q_id']) ?? ""; ?>">
         <div class="input">
           <label for="quest_">Test questions</label>
-          <textarea name="quest_" placeholder="Enter test questions here" id="quest_" required><?= @$question_text ?? ""; ?></textarea>
+          <textarea name="quest_" rows="8" placeholder="Enter test questions here" id="quest_" required><?= @$question_text ?? ""; ?></textarea>
         </div>
         <div class="input">
           <label for="images">Select Images to be uploaded</label>
@@ -36,7 +37,7 @@ require_once APPROOT . "/views/admin/inc/header.php";
               <input type="text" name="opt<?= $i; ?>" value="<?= @($options[$i - 1]->option_text) ?? ""; ?>" required placeholder="something" />
               <div class="reason">
                 <label for=""> Rationale </label>
-                <input type="text" value="<?= @($options[$i - 1]->rationale) ?? ""; ?>" name="opt<?= $i; ?>_reason" placeholder="something" />
+                <textarea name="opt<?= $i; ?>_reason" rows="4" placeholder="Enter rationale"><?= @($options[$i - 1]->rationale) ?? ""; ?></textarea>
               </div>
             </div>
           <?php } ?>
